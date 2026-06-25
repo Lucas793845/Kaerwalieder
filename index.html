@@ -21,6 +21,10 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #c3242a; border-radius: 10px; border: 2px solid #fde68a; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9c1c21; }
         .blur-text { filter: blur(6px); user-select: none; }
+        
+        /* Sanfte Einblendung für Tabs */
+        .fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <!-- Hintergrundfarbe vom Plakat: ein kräftiges Kärwa-Gelb/Orange -->
@@ -73,7 +77,7 @@
         <div id="content-area" class="md:col-span-2 flex flex-col gap-6">
             
             <!-- TAB 1: LIEDER & TEXTE -->
-            <div id="tab-lyrics" class="tab-content bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 relative overflow-hidden block">
+            <div id="tab-lyrics" class="tab-content bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 relative overflow-hidden block fade-in">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 relative z-10">
                     <h2 id="active-song-title" class="text-xl md:text-2xl font-black text-[#c3242a]">Lade Lied...</h2>
                     <button id="btn-learn-mode" class="flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#fde68a] text-[#c3242a] rounded-lg text-xs md:text-sm font-bold transition-colors border-2 border-[#c3242a] shadow-sm">
@@ -96,7 +100,7 @@
             </div>
 
             <!-- TAB 2: SINGEN ÜBEN -->
-            <div id="tab-practice" class="tab-content bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 hidden">
+            <div id="tab-practice" class="tab-content bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 hidden fade-in">
                 <h3 class="text-lg font-black text-[#c3242a] mb-1 flex items-center gap-2">
                     <i data-lucide="mic" class="w-5 h-5 text-[#f4aa26] fill-[#c3242a]"></i> Singen: <span id="practice-song-title" class="text-slate-800">Lied</span>
                 </h3>
@@ -144,12 +148,12 @@
         </div>
         
         <!-- TAB 3: WÖRTERBUCH (Wird über volle Breite angezeigt, wenn aktiv) -->
-        <div id="tab-dictionary" class="tab-content md:col-span-3 bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 hidden">
+        <div id="tab-dictionary" class="tab-content md:col-span-3 bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 hidden fade-in">
             <div class="text-center mb-6">
                 <h2 class="text-2xl md:text-3xl font-black text-[#c3242a] mb-2 flex items-center justify-center gap-2">
                     <i data-lucide="book-a" class="w-8 h-8 text-[#f4aa26]"></i> Fränkisch für Anfänger
                 </h2>
-                <p class="text-slate-700 font-medium">Damit auch die "Zuagrasten" auf der Kärwa mitsingen können.</p>
+                <p class="text-slate-700 font-medium">Damit auch die "Zuagrasten" (Zugereisten) auf der Kärwa mitsingen können.</p>
             </div>
             
             <div id="dictionary-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -192,26 +196,58 @@
         ];
 
         // --- DATEN: WÖRTERBUCH ---
+        // Das Wörterbuch wurde massiv um die fränkischen Begriffe aus euren Texten erweitert.
         const franconianDictionary = [
-            { f: "Bassd scho", g: "Sehr gut (Höchstes Lob)" },
-            { f: "Böschla", g: "Burschen / Kärwaburschen" },
+            { f: "Aff", g: "Auf" },
             { f: "Baicher", g: "Einwohner vom Nachbarort Buch" },
-            { f: "Brunst", g: "Pinkelt (oder hier beim Kochen: brennt an)" },
-            { f: "Bumbl", g: "Glocke / Aufregung" },
-            { f: "Dout", g: "Tut" },
+            { f: "Bassd scho", g: "Sehr gut (Höchstes Lob in Franken)" },
+            { f: "Bäschla / Böschla", g: "Burschen / Kärwaburschen" },
+            { f: "Beidl", g: "Beutel / Geldbeutel" },
+            { f: "Beisam", g: "Beisammen" },
+            { f: "Brunst", g: "Pinkelt (oder beim Kochen: brennt an)" },
+            { f: "Bumbl", g: "Glocke / Aufregung / Trubel" },
+            { f: "Bürscht", g: "Gebürstet (oft zweideutig für Geschlechtsverkehr)" },
+            { f: "Däft", g: "Dürfte / Darf" },
+            { f: "Däi", g: "Die" },
+            { f: "Dou / Dout", g: "Da / Tut" },
+            { f: "Drom", g: "Dort droben / Oben" },
+            { f: "Ei", g: "Ein (wie in 'ei spannen')" },
+            { f: "Etza / Etz", g: "Jetzt" },
+            { f: "Frouh", g: "Froh" },
             { f: "Gehm / Lehm", g: "Geben / Leben" },
-            { f: "Gerumbl", g: "Gerümpel / Chaos" },
+            { f: "Gerumbl / Rumbl", g: "Gerümpel / Chaos / Poltern" },
+            { f: "Gäih", g: "Gehe" },
             { f: "Gflocht", g: "Geflucht" },
+            { f: "Gla", g: "Klein" },
+            { f: "Gorka", g: "Gar kein" },
             { f: "Graina", g: "Weinen" },
+            { f: "Greits dunnerwätter", g: "Kreuzdonnerwetter (Fluch)" },
             { f: "Gschra", g: "Geschrei" },
             { f: "Gstanzla", g: "Kurzes, lustiges Spottlied" },
-            { f: "Madla", g: "Mädchen" },
-            { f: "Muggn", g: "Mücken" },
+            { f: "Häidla", g: "Hütchen / Hut" },
+            { f: "Kappt", g: "Gehabt" },
+            { f: "Kämmerla", g: "Kämmerchen / Kleines Zimmer" },
+            { f: "Kieft", g: "Kauft" },
+            { f: "Kutschen", g: "Kinderwagen schieben / aufziehen" },
+            { f: "Metzelsuppn", g: "Kräftige Wurstsuppe (nach der Schlachtung)" },
+            { f: "Mo", g: "Mann" },
+            { f: "Mou", g: "Muss" },
+            { f: "Muggn / Muggerbaa", g: "Mücken / Mückenbein" },
+            { f: "Naa", g: "Nein" },
             { f: "Nauf / Ro", g: "Hinauf / Hinunter" },
             { f: "Nieber / Rieber", g: "Hinüber / Herüber" },
-            { f: "Oarsch", g: "Hintern" },
+            { f: "Oarsch / Orsch", g: "Hintern" },
+            { f: "Ochsagschür", g: "Ochsengeschirr" },
+            { f: "Ouh", g: "An (wie in 'anklopfen')" },
+            { f: "Safti", g: "Saftig" },
             { f: "Schäi", g: "Schön" },
-            { f: "Schotzala", g: "Schätzchen" }
+            { f: "Schätza", g: "Schürze" },
+            { f: "Schauma", g: "Schauen wir" },
+            { f: "Schozerla / Schotzala", g: "Schätzchen" },
+            { f: "Stieferla", g: "Stiefelchen" },
+            { f: "Stodltür", g: "Scheunentor" },
+            { f: "Weng", g: "Wenig / Ein bisschen" },
+            { f: "Wos", g: "Weißt du was" }
         ];
 
         let activeSongId = 1;
@@ -220,7 +256,6 @@
         let recognition = null;
         let fullTranscript = "";
 
-        // Tab Navigation Logic
         window.switchTab = function(tabId) {
             // Alle Tabs verstecken
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
@@ -242,7 +277,6 @@
             activeBtn.classList.remove('bg-transparent', 'hover:bg-[#fff8e7]', 'border-transparent');
 
             // Layout anpassen (Sidebar ausblenden wenn Wörterbuch aktiv ist)
-            const mainContainer = document.getElementById('main-container');
             const sidebar = document.getElementById('sidebar-songs');
             const contentArea = document.getElementById('content-area');
 
@@ -255,11 +289,11 @@
             }
 
             // Audio stoppen wenn Tab gewechselt wird
-            document.getElementById('audio-player').pause();
+            const audioPlayer = document.getElementById('audio-player');
+            if(audioPlayer) audioPlayer.pause();
             if(isRecording) stopRecording();
         }
 
-        // Levenshtein Algorithm for Fuzzy Matching
         function getLevenshteinDistance(a, b) {
             const matrix = [];
             for (let i = 0; i <= b.length; i++) matrix[i] = [i];
@@ -337,7 +371,7 @@
 
             function renderDictionary() {
                 dictionaryGrid.innerHTML = franconianDictionary.map(word => `
-                    <div class="bg-white p-4 rounded-xl border-2 border-[#f4aa26] shadow-sm flex flex-col justify-center text-center">
+                    <div class="bg-white p-4 rounded-xl border-2 border-[#f4aa26] shadow-sm flex flex-col justify-center text-center hover:shadow-md transition-shadow">
                         <span class="font-black text-lg text-[#c3242a] mb-1">${word.f}</span>
                         <span class="text-sm text-slate-600 font-medium">${word.g}</span>
                     </div>
@@ -391,7 +425,7 @@
                 resultsSection.classList.add('hidden');
                 if (isRecording) stopRecording();
 
-                // Falls jemand im Wörterbuch ist und ein Lied wählt, springen wir zum Lieder-Tab
+                // Falls jemand im Wörterbuch ist und links auf ein Lied klickt, springen wir zum Lieder-Tab
                 if(document.getElementById('tab-dictionary').classList.contains('block')) {
                     switchTab('tab-lyrics');
                 }
@@ -517,7 +551,6 @@
                 else startRecording();
             });
 
-            // Start App
             renderDictionary();
             renderSongList();
             selectSong(1);
