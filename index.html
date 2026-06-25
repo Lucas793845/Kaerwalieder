@@ -3,29 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kärwalieder Trainer</title>
-    <!-- Tailwind CSS - Stabile Version -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
+    <title>Schloßkärwa Almoshof Trainer</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        /* Custom scrollbar */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        /* Custom scrollbar passend zum gelben Design */
+        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #fde68a; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c3242a; border-radius: 10px; border: 2px solid #fde68a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #9c1c21; }
         .blur-text { filter: blur(6px); user-select: none; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<!-- Hintergrundfarbe vom Plakat: ein kräftiges Kärwa-Gelb/Orange -->
+<body class="bg-[#f4aa26] text-slate-900 font-sans min-h-screen flex flex-col">
 
-    <!-- Header -->
-    <header class="bg-red-600 text-white p-5 shadow-md border-b-4 border-amber-400">
-        <div class="max-w-6xl mx-auto flex items-center gap-3">
-            <i data-lucide="music" class="w-8 h-8 text-amber-300"></i>
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold tracking-wide">Kärwalieder Trainer</h1>
-                <p class="text-red-100 text-xs md:text-sm mt-0.5">Lern dei Gstanzln auswendig für die nächste Kärwa!</p>
+    <!-- Header im Stil des Plakats -->
+    <header class="bg-[#c3242a] text-white p-6 shadow-xl border-b-[8px] border-white relative overflow-hidden">
+        <!-- Zier-Elemente im Hintergrund -->
+        <i data-lucide="flag" class="absolute right-[-20px] top-[-20px] w-64 h-64 text-white opacity-10 rotate-12"></i>
+        <i data-lucide="music" class="absolute left-[-20px] bottom-[-20px] w-48 h-48 text-white opacity-10 -rotate-12"></i>
+        
+        <div class="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
+            <h2 class="text-lg md:text-xl font-bold tracking-wider mb-0 text-white/90">Schloßkärwa in</h2>
+            <!-- Der fette ALMOSHOF Schriftzug -->
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-1 mt-[-4px]">ALMOSHOF</h1>
+            <p class="text-xl md:text-2xl font-bold mb-4 text-white/95">11. bis 15. Juli 2025</p>
+            
+            <div class="bg-[#f4aa26] text-[#c3242a] px-5 py-1.5 rounded-full font-black text-sm md:text-base shadow-md border-2 border-white uppercase tracking-wide flex items-center gap-2">
+                <i data-lucide="mic-2" class="w-4 h-4"></i> Gstanzla Trainer
             </div>
         </div>
     </header>
@@ -34,12 +42,12 @@
     <main class="max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 flex-grow">
         
         <!-- Left Column: Song List -->
-        <div class="md:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col h-[60vh] md:h-[75vh]">
-            <div class="p-4 bg-slate-100 border-b border-slate-200 flex items-center gap-2">
-                <i data-lucide="book-open" class="w-5 h-5 text-red-600"></i>
-                <h2 class="font-bold text-base text-slate-700">Lieder & Gstanzln</h2>
+        <div class="md:col-span-1 bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] overflow-hidden flex flex-col h-[60vh] md:h-[75vh]">
+            <div class="p-4 bg-[#c3242a] text-white border-b-4 border-[#f4aa26] flex items-center gap-2">
+                <i data-lucide="book-open" class="w-5 h-5 text-[#f4aa26]"></i>
+                <h2 class="font-bold text-lg">Lieder & Gstanzln</h2>
             </div>
-            <div id="song-list" class="overflow-y-auto p-2 flex-grow custom-scrollbar">
+            <div id="song-list" class="overflow-y-auto p-2 flex-grow custom-scrollbar bg-[#fff8e7]">
                 <!-- Lieder werden hier geladen -->
             </div>
         </div>
@@ -48,74 +56,79 @@
         <div class="md:col-span-2 flex flex-col gap-6">
             
             <!-- Song Display Box -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-6">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-                    <h2 id="active-song-title" class="text-xl md:text-2xl font-bold text-slate-800">Lade Lied...</h2>
-                    <button id="btn-learn-mode" class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 text-slate-700 rounded-lg text-xs font-semibold transition-colors border border-slate-200">
+            <div class="bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 relative overflow-hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 relative z-10">
+                    <h2 id="active-song-title" class="text-xl md:text-2xl font-black text-[#c3242a]">Lade Lied...</h2>
+                    <button id="btn-learn-mode" class="flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#fde68a] text-[#c3242a] rounded-lg text-xs md:text-sm font-bold transition-colors border-2 border-[#c3242a] shadow-sm">
                         <i data-lucide="eye-off" class="w-4 h-4" id="learn-icon"></i>
-                        <span id="learn-text">Lern-Modus (Text verdecken)</span>
+                        <span id="learn-text">Lern-Modus (verdecken)</span>
                     </button>
                 </div>
 
-                <div id="active-song-lyrics" class="text-base md:text-lg leading-relaxed whitespace-pre-wrap p-5 rounded-xl border bg-red-50/60 border-red-100 text-slate-800 font-medium transition-all duration-300">
+                <div id="active-song-lyrics" class="text-base md:text-lg leading-relaxed whitespace-pre-wrap p-5 rounded-xl border-2 bg-white border-[#f4aa26] text-slate-800 font-medium transition-all duration-300 relative z-10 shadow-inner">
                     <!-- Text hier -->
                 </div>
 
                 <!-- Audio Player Container -->
-                <div id="audio-container" class="mt-4 p-4 bg-slate-50 rounded-xl border border-slate-200 hidden">
-                    <p class="text-xs text-slate-500 mb-2 font-semibold flex items-center gap-1.5">
-                        <i data-lucide="play" class="w-3.5 h-3.5 text-red-500"></i> Original-Aufnahme zum Anhören
+                <div id="audio-container" class="mt-4 p-4 bg-[#fde68a] rounded-xl border-2 border-[#f4aa26] hidden relative z-10">
+                    <p class="text-xs text-[#c3242a] mb-2 font-bold flex items-center gap-1.5 uppercase tracking-wide">
+                        <i data-lucide="play-circle" class="w-4 h-4"></i> Aufnahme abspielen
                     </p>
                     <audio id="audio-player" controls class="w-full h-10 outline-none"></audio>
                 </div>
             </div>
 
             <!-- Recording Box -->
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-5 md:p-6">
-                <h3 class="text-lg font-bold text-slate-800 mb-3 flex items-center gap-2">
-                    <i data-lucide="mic" class="w-5 h-5 text-red-600"></i> Einsingen & Prüfen
+            <div class="bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6">
+                <h3 class="text-lg font-black text-[#c3242a] mb-3 flex items-center gap-2">
+                    <i data-lucide="mic" class="w-5 h-5 text-[#f4aa26] fill-[#c3242a]"></i> Einsingen & Prüfen
                 </h3>
                 
-                <div class="bg-blue-50 border border-blue-100 text-blue-800 p-3.5 rounded-xl text-xs md:text-sm flex gap-2.5 mb-5">
-                    <i data-lucide="info" class="w-5 h-5 flex-shrink-0 text-blue-600 mt-0.5"></i>
+                <div class="bg-white border-2 border-[#f4aa26] text-slate-700 p-3.5 rounded-xl text-xs md:text-sm flex gap-2.5 mb-5 shadow-sm">
+                    <i data-lucide="info" class="w-5 h-5 flex-shrink-0 text-[#f4aa26] mt-0.5"></i>
                     <p>
                         <strong>Hinweis zum Dialekt:</strong> Die Spracherkennung im Browser erwartet Hochdeutsch. 
-                        Singe auf Fränkisch los! Die App nutzt einen toleranten Algorithmus, um zu prüfen, ob der Text sinngemäß stimmt. Erwarte lustige Übersetzungen!
+                        Singe auf Fränkisch los! Die App nutzt einen toleranten Algorithmus. Erwarte lustige Übersetzungen!
                     </p>
                 </div>
 
-                <div class="flex flex-col items-center justify-center p-6 bg-slate-50 rounded-xl border-2 border-dashed border-slate-300">
-                    <button id="btn-mic" class="flex flex-col items-center justify-center w-28 h-28 rounded-full transition-all duration-300 shadow-md bg-white hover:bg-slate-50 border-4 border-slate-200 active:scale-95 group">
-                        <div id="mic-icon-container" class="p-3 bg-red-50 text-red-500 rounded-full group-hover:bg-red-100 transition-colors mb-1">
+                <div class="flex flex-col items-center justify-center p-6 bg-[#fde68a] rounded-xl border-2 border-dashed border-[#c3242a]">
+                    <button id="btn-mic" class="flex flex-col items-center justify-center w-28 h-28 rounded-full transition-all duration-300 shadow-xl bg-white hover:bg-slate-50 border-4 border-[#c3242a] active:scale-95 group text-[#c3242a]">
+                        <div id="mic-icon-container" class="p-3 rounded-full transition-colors mb-1">
                             <i data-lucide="mic" class="w-8 h-8"></i>
                         </div>
-                        <span id="mic-status-text" class="font-bold text-xs text-slate-600">Starten</span>
+                        <span id="mic-status-text" class="font-black text-xs uppercase tracking-wide">Starten</span>
                     </button>
-                    <p id="recording-indicator" class="mt-3 text-sm font-semibold text-red-500 animate-pulse hidden">Ich höre zu... Sing los!</p>
+                    <p id="recording-indicator" class="mt-3 text-sm font-black text-[#c3242a] animate-pulse hidden bg-white px-3 py-1 rounded-full border border-[#c3242a]">Ich höre zu... Sing los!</p>
                 </div>
 
                 <!-- Results Section -->
                 <div id="results-section" class="mt-5 hidden">
-                    <h4 class="font-bold text-sm text-slate-700 mb-1.5 uppercase tracking-wider">Ergebnis:</h4>
-                    <div class="p-3 bg-slate-100 rounded-lg text-slate-600 italic mb-4 text-sm border border-slate-200">
-                        <span class="font-bold block mb-1 text-[10px] text-slate-400 uppercase tracking-tight">Vom Browser verstanden:</span>
+                    <h4 class="font-bold text-sm text-[#c3242a] mb-1.5 uppercase tracking-wider">Ergebnis:</h4>
+                    <div class="p-3 bg-white rounded-lg text-slate-600 italic mb-4 text-sm border-2 border-[#f4aa26]">
+                        <span class="font-bold block mb-1 text-[10px] text-[#f4aa26] uppercase tracking-tight">Vom Browser verstanden:</span>
                         <span id="recognized-text">...</span>
                     </div>
-                    <div id="score-banner" class="p-4 rounded-xl flex items-center justify-between text-white shadow-sm transition-all duration-300">
+                    <div id="score-banner" class="p-4 rounded-xl flex items-center justify-between text-white shadow-md transition-all duration-300 border-2 border-white">
                         <div class="flex items-center gap-3">
                             <div id="score-icon-box" class="p-1.5 bg-white/20 rounded-full">
                                 <i data-lucide="check-circle" class="w-7 h-7"></i>
                             </div>
                             <div>
-                                <p id="score-headline" class="font-bold text-base md:text-lg">Bassd scho!</p>
-                                <p class="text-xs opacity-90">Übereinstimmung mit dem Liedtext</p>
+                                <p id="score-headline" class="font-black text-base md:text-lg tracking-wide">Bassd scho!</p>
+                                <p class="text-xs font-medium opacity-90">Übereinstimmung mit dem Liedtext</p>
                             </div>
                         </div>
-                        <div id="score-percent" class="text-2xl md:text-3xl font-black">0%</div>
+                        <div id="score-percent" class="text-2xl md:text-4xl font-black drop-shadow-md">0%</div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
     <!-- APP LOGIC -->
     <script>
-        // Data block
+        // Data block mit allen 27 Liedern!
         const kaerwaLieder = [
             { id: 1, title: "Almashiefer Schlössla", lyrics: "Und des Almashiefer Schlössla des is schäi beisam.\nHullareidium Hullareidium\nUnd die Almashiefer Böschla däi hald´n schäi zamm\nHullarei di rei di um" },
             { id: 2, title: "Schwatze Stieferla", lyrics: "Schwatze Stieferla, weiße Schätza und a schneidigs Häidla auf\nAlmashiefer Kärwabäschla immer lustig und wohl auf." },
@@ -138,7 +151,7 @@
             { id: 19, title: "Wenn i ham kumm", lyrics: "Wenn i ham kumm, gäih ums Haus rum und am Kammerfenster klopf i ouh, \nwenn mei frau frocht wer draußn is soch i rumbl bumbl die Mo" },
             { id: 20, title: "Und do ham a nix gsunga", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "gsunga.mp3" },
             { id: 21, title: "Wenn die Almashiefer kumma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "wenn_die_almoshiefer_kumma.mp3" },
-            { id: 22, "title": "Ja die Peicha ihre Madla", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "buecher_madla.mp3" },
+            { id: 22, title: "Ja die Peicha ihre Madla", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "buecher_madla.mp3" },
             { id: 23, title: "Kärwa ist kumma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "kaerwa_ist_kumma.mp3" },
             { id: 24, title: "Was ist denn des für Lärma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "laerm.mp3" },
             { id: 25, title: "Nieber, rieber, nauf und ro", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "nueber.mp3" },
@@ -152,7 +165,7 @@
         let recognition = null;
         let fullTranscript = "";
 
-        // Levenshtein Algorithm
+        // Levenshtein Algorithm for Fuzzy Matching
         function getLevenshteinDistance(a, b) {
             const matrix = [];
             for (let i = 0; i <= b.length; i++) matrix[i] = [i];
@@ -163,9 +176,9 @@
                         matrix[i][j] = matrix[i - 1][j - 1];
                     } else {
                         matrix[i][j] = Math.min(
-                            matrix[i - 1][j - 1] + 1,
-                            matrix[i][j - 1] + 1,
-                            matrix[i - 1][j] + 1
+                            matrix[i - 1][j - 1] + 1, // substitution
+                            matrix[i][j - 1] + 1,     // insertion
+                            matrix[i - 1][j] + 1      // deletion
                         );
                     }
                 }
@@ -203,7 +216,7 @@
             return Math.min(Math.max(Math.round(score), 0), 100);
         }
 
-        // Wait for everything to load!
+        // Initialize UI Elements safely
         document.addEventListener('DOMContentLoaded', () => {
             const songListEl = document.getElementById('song-list');
             const songTitleEl = document.getElementById('active-song-title');
@@ -229,25 +242,30 @@
 
             function renderSongList() {
                 songListEl.innerHTML = kaerwaLieder.map(song => `
-                    <button onclick="selectSong(${song.id})" id="song-btn-${song.id}" class="w-full text-left p-3 my-1 rounded-xl transition-all duration-200 flex items-center justify-between group text-slate-600 hover:bg-slate-50 text-sm">
-                        <span class="truncate font-medium">${song.id}. ${song.title}</span>
-                        ${song.audioUrl ? '<i data-lucide="play" class="w-3.5 h-3.5 text-slate-400 group-hover:text-red-500 transition-colors"></i>' : ''}
+                    <button onclick="selectSong(${song.id})" id="song-btn-${song.id}" class="w-full text-left p-3 my-1.5 rounded-xl transition-all duration-200 flex items-center justify-between group text-slate-700 hover:bg-[#fde68a] border-2 border-transparent text-sm">
+                        <span class="truncate font-semibold">${song.id}. ${song.title}</span>
+                        ${song.audioUrl ? '<i data-lucide="play-circle" class="w-4 h-4 text-[#c3242a] opacity-50 group-hover:opacity-100 transition-opacity"></i>' : ''}
                     </button>
                 `).join('');
                 if (window.lucide) window.lucide.createIcons();
             }
 
             window.selectSong = function(id) {
-                document.getElementById(`song-btn-${activeSongId}`)?.classList.remove('bg-red-50', 'text-red-700', 'font-semibold', 'border', 'border-red-100');
-                document.getElementById(`song-btn-${activeSongId}`)?.classList.add('text-slate-600', 'hover:bg-slate-50');
+                // Reset active styles (Angepasst an neues Design)
+                const oldBtn = document.getElementById(`song-btn-${activeSongId}`);
+                if (oldBtn) {
+                    oldBtn.classList.remove('bg-[#f4aa26]', 'text-[#c3242a]', 'font-black', 'border-[#c3242a]', 'shadow-sm');
+                    oldBtn.classList.add('text-slate-700', 'hover:bg-[#fde68a]', 'border-transparent');
+                }
 
                 activeSongId = id;
                 const song = kaerwaLieder.find(s => s.id === id);
                 
+                // Set active styles (Angepasst an neues Design)
                 const activeBtn = document.getElementById(`song-btn-${id}`);
                 if (activeBtn) {
-                    activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-50');
-                    activeBtn.classList.add('bg-red-50', 'text-red-700', 'font-semibold', 'border', 'border-red-100');
+                    activeBtn.classList.remove('text-slate-700', 'hover:bg-[#fde68a]', 'border-transparent');
+                    activeBtn.classList.add('bg-[#f4aa26]', 'text-[#c3242a]', 'font-black', 'border-[#c3242a]', 'shadow-sm');
                 }
 
                 songTitleEl.textContent = song.title;
@@ -279,7 +297,7 @@
                     learnIcon.setAttribute('data-lucide', 'eye');
                 } else {
                     songLyricsEl.classList.remove('blur-text');
-                    learnText.textContent = "Lern-Modus (Text verdecken)";
+                    learnText.textContent = "Lern-Modus (verdecken)";
                     learnIcon.setAttribute('data-lucide', 'eye-off');
                 }
                 if (window.lucide) window.lucide.createIcons();
@@ -331,10 +349,9 @@
                     recognition.start();
                     isRecording = true;
                     
-                    btnMic.classList.remove('bg-white', 'hover:bg-slate-50', 'border-slate-200');
-                    btnMic.classList.add('bg-red-600', 'hover:bg-red-700', 'border-red-700', 'text-white');
-                    micIconContainer.classList.remove('bg-red-50', 'text-red-500');
-                    micIconContainer.classList.add('bg-red-700', 'text-white');
+                    // UI Changes für das Plakat-Design
+                    btnMic.classList.remove('bg-white', 'text-[#c3242a]', 'hover:bg-slate-50');
+                    btnMic.classList.add('bg-[#c3242a]', 'text-white');
                     micStatusText.textContent = "Stoppen";
                     recordingIndicator.classList.remove('hidden');
                 } catch (err) {
@@ -348,13 +365,13 @@
                 
                 isRecording = false;
                 
-                btnMic.classList.add('bg-white', 'hover:bg-slate-50', 'border-slate-200');
-                btnMic.classList.remove('bg-red-600', 'hover:bg-red-700', 'border-red-700', 'text-white');
-                micIconContainer.classList.add('bg-red-50', 'text-red-500');
-                micIconContainer.classList.remove('bg-red-700', 'text-white');
+                // UI Reset für das Plakat-Design
+                btnMic.classList.add('bg-white', 'text-[#c3242a]', 'hover:bg-slate-50');
+                btnMic.classList.remove('bg-[#c3242a]', 'text-white');
                 micStatusText.textContent = "Starten";
                 recordingIndicator.classList.add('hidden');
 
+                // Evaluate
                 setTimeout(() => {
                     const spoken = recognizedTextEl.textContent;
                     const activeSong = kaerwaLieder.find(s => s.id === activeSongId);
@@ -363,17 +380,18 @@
                     scorePercent.textContent = score + "%";
                     resultsSection.classList.remove('hidden');
 
-                    scoreBanner.className = "p-4 rounded-xl flex items-center justify-between text-white shadow-sm transition-all duration-300 ";
+                    scoreBanner.className = "p-4 rounded-xl flex items-center justify-between text-white shadow-md transition-all duration-300 border-2 border-white ";
                     if (score > 70) {
-                        scoreBanner.classList.add('bg-green-500');
+                        scoreBanner.classList.add('bg-green-600');
                         scoreHeadline.textContent = "Bassd scho! (Sehr gut)";
                         scoreIconBox.innerHTML = '<i data-lucide="check-circle" class="w-7 h-7"></i>';
                     } else if (score > 35) {
-                        scoreBanner.classList.add('bg-amber-500');
+                        scoreBanner.classList.add('bg-[#f4aa26]', 'text-slate-900');
+                        scoreBanner.classList.remove('text-white');
                         scoreHeadline.textContent = "Ganz ordentlich! (Üb noch)";
                         scoreIconBox.innerHTML = '<i data-lucide="help-circle" class="w-7 h-7"></i>';
                     } else {
-                        scoreBanner.classList.add('bg-red-500');
+                        scoreBanner.classList.add('bg-[#c3242a]');
                         scoreHeadline.textContent = "Naa, des war nix! (Nochmal)";
                         scoreIconBox.innerHTML = '<i data-lucide="x-circle" class="w-7 h-7"></i>';
                     }
@@ -389,7 +407,7 @@
                 }
             });
 
-            // Start the app!
+            // Start App
             renderSongList();
             selectSong(1);
         });
