@@ -11,7 +11,7 @@
     <meta http-equiv="Expires" content="0">
 
     <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -27,41 +27,53 @@
 <body class="bg-[#f4aa26] text-slate-900 font-sans min-h-screen flex flex-col">
 
     <!-- Header im Stil des Plakats -->
-    <header class="bg-[#c3242a] text-white p-6 shadow-xl border-b-[8px] border-white relative overflow-hidden">
+    <header class="bg-[#c3242a] text-white pt-6 pb-4 shadow-md relative overflow-hidden">
         <!-- Zier-Elemente im Hintergrund -->
         <i data-lucide="flag" class="absolute right-[-20px] top-[-20px] w-64 h-64 text-white opacity-10 rotate-12"></i>
         <i data-lucide="music" class="absolute left-[-20px] bottom-[-20px] w-48 h-48 text-white opacity-10 -rotate-12"></i>
         
-        <div class="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
+        <div class="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10 px-4">
             <h2 class="text-lg md:text-xl font-bold tracking-wider mb-0 text-white/90">Schloßkärwa in</h2>
             <!-- Der fette ALMOSHOF Schriftzug -->
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-1 mt-[-4px]">ALMOSHOF</h1>
-            
-            <div class="bg-[#f4aa26] text-[#c3242a] px-5 py-1.5 rounded-full font-black text-sm md:text-base shadow-md border-2 border-white uppercase tracking-wide flex items-center gap-2">
-                <i data-lucide="mic-2" class="w-4 h-4"></i> Gstanzla Trainer
-            </div>
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-1 mt-[-4px] drop-shadow-lg">ALMOSHOF</h1>
+            <p class="text-lg md:text-xl font-bold mb-2 text-white/95">11. bis 15. Juli 2025</p>
         </div>
     </header>
 
+    <!-- NEUE NAVIGATION SLEISTE -->
+    <nav class="bg-[#fde68a] border-b-4 border-white shadow-md sticky top-0 z-20">
+        <div class="max-w-6xl mx-auto p-2 flex justify-center gap-2 md:gap-4 flex-wrap">
+            <button onclick="switchTab('tab-lyrics')" id="btn-tab-lyrics" class="nav-btn bg-white shadow-md border-2 border-[#c3242a] text-[#c3242a] px-4 md:px-6 py-2 rounded-full font-black text-sm md:text-base flex items-center gap-2 transition-all">
+                <i data-lucide="music" class="w-4 h-4"></i> Lieder
+            </button>
+            <button onclick="switchTab('tab-practice')" id="btn-tab-practice" class="nav-btn bg-transparent hover:bg-[#fff8e7] border-2 border-transparent text-[#c3242a] px-4 md:px-6 py-2 rounded-full font-black text-sm md:text-base flex items-center gap-2 transition-all">
+                <i data-lucide="mic-2" class="w-4 h-4"></i> Singen üben
+            </button>
+            <button onclick="switchTab('tab-dictionary')" id="btn-tab-dictionary" class="nav-btn bg-transparent hover:bg-[#fff8e7] border-2 border-transparent text-[#c3242a] px-4 md:px-6 py-2 rounded-full font-black text-sm md:text-base flex items-center gap-2 transition-all">
+                <i data-lucide="book" class="w-4 h-4"></i> Wörterbuch
+            </button>
+        </div>
+    </nav>
+
     <!-- Main Content -->
-    <main class="max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 flex-grow">
+    <main id="main-container" class="max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 flex-grow">
         
-        <!-- Left Column: Song List -->
-        <div class="md:col-span-1 bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] overflow-hidden flex flex-col h-[60vh] md:h-[75vh]">
+        <!-- Left Column: Song List (Bleibt bei Lieder & Singen sichtbar) -->
+        <div id="sidebar-songs" class="md:col-span-1 bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] overflow-hidden flex flex-col h-[50vh] md:h-[70vh]">
             <div class="p-4 bg-[#c3242a] text-white border-b-4 border-[#f4aa26] flex items-center gap-2">
-                <i data-lucide="book-open" class="w-5 h-5 text-[#f4aa26]"></i>
-                <h2 class="font-bold text-lg">Lieder & Gstanzln</h2>
+                <i data-lucide="list-music" class="w-5 h-5 text-[#f4aa26]"></i>
+                <h2 class="font-bold text-lg">Gstanzln auswählen</h2>
             </div>
             <div id="song-list" class="overflow-y-auto p-2 flex-grow custom-scrollbar bg-[#fff8e7]">
                 <!-- Lieder werden hier geladen -->
             </div>
         </div>
 
-        <!-- Right Column: Active Song & Trainer -->
-        <div class="md:col-span-2 flex flex-col gap-6">
+        <!-- Right Column: Dynamic Content based on Tabs -->
+        <div id="content-area" class="md:col-span-2 flex flex-col gap-6">
             
-            <!-- Song Display Box -->
-            <div class="bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 relative overflow-hidden">
+            <!-- TAB 1: LIEDER & TEXTE -->
+            <div id="tab-lyrics" class="tab-content bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 relative overflow-hidden block">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3 relative z-10">
                     <h2 id="active-song-title" class="text-xl md:text-2xl font-black text-[#c3242a]">Lade Lied...</h2>
                     <button id="btn-learn-mode" class="flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#fde68a] text-[#c3242a] rounded-lg text-xs md:text-sm font-bold transition-colors border-2 border-[#c3242a] shadow-sm">
@@ -83,17 +95,17 @@
                 </div>
             </div>
 
-            <!-- Recording Box -->
-            <div class="bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6">
-                <h3 class="text-lg font-black text-[#c3242a] mb-3 flex items-center gap-2">
-                    <i data-lucide="mic" class="w-5 h-5 text-[#f4aa26] fill-[#c3242a]"></i> Einsingen & Prüfen
+            <!-- TAB 2: SINGEN ÜBEN -->
+            <div id="tab-practice" class="tab-content bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 hidden">
+                <h3 class="text-lg font-black text-[#c3242a] mb-1 flex items-center gap-2">
+                    <i data-lucide="mic" class="w-5 h-5 text-[#f4aa26] fill-[#c3242a]"></i> Singen: <span id="practice-song-title" class="text-slate-800">Lied</span>
                 </h3>
+                <p class="text-sm text-slate-600 mb-4 font-medium">Lass den Algorithmus prüfen, ob du den Text drauf hast!</p>
                 
                 <div class="bg-white border-2 border-[#f4aa26] text-slate-700 p-3.5 rounded-xl text-xs md:text-sm flex gap-2.5 mb-5 shadow-sm">
                     <i data-lucide="info" class="w-5 h-5 flex-shrink-0 text-[#f4aa26] mt-0.5"></i>
                     <p>
-                        <strong>Hinweis zum Dialekt:</strong> Die Spracherkennung im Browser erwartet Hochdeutsch. 
-                        Singe auf Fränkisch los! Die App nutzt einen toleranten Algorithmus. Erwarte lustige Übersetzungen!
+                        <strong>Hinweis:</strong> Singe ganz normal Fränkisch los. Erwarte lustige Übersetzungen vom Browser, aber unser Kärwa-Toleranz-Algorithmus erkennt trotzdem, ob es passt!
                     </p>
                 </div>
 
@@ -128,12 +140,27 @@
                     </div>
                 </div>
             </div>
+            
+        </div>
+        
+        <!-- TAB 3: WÖRTERBUCH (Wird über volle Breite angezeigt, wenn aktiv) -->
+        <div id="tab-dictionary" class="tab-content md:col-span-3 bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 hidden">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl md:text-3xl font-black text-[#c3242a] mb-2 flex items-center justify-center gap-2">
+                    <i data-lucide="book-a" class="w-8 h-8 text-[#f4aa26]"></i> Fränkisch für Anfänger
+                </h2>
+                <p class="text-slate-700 font-medium">Damit auch die "Zuagrasten" auf der Kärwa mitsingen können.</p>
+            </div>
+            
+            <div id="dictionary-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- Wörterbuch wird über JS geladen -->
+            </div>
         </div>
     </main>
 
     <!-- APP LOGIC -->
     <script>
-        // Data block mit allen 27 Liedern!
+        // --- DATEN: LIEDER ---
         const kaerwaLieder = [
             { id: 1, title: "Almashiefer Schlössla", lyrics: "Und des Almashiefer Schlössla des is schäi beisam.\nHullareidium Hullareidium\nUnd die Almashiefer Böschla däi hald´n schäi zamm\nHullarei di rei di um" },
             { id: 2, title: "Schwatze Stieferla", lyrics: "Schwatze Stieferla, weiße Schätza und a schneidigs Häidla auf\nAlmashiefer Kärwabäschla immer lustig und wohl auf." },
@@ -154,9 +181,9 @@
             { id: 17, title: "Mei Mudda kocht Nudeln", lyrics: "Mei Mudda kocht Nudeln und brunst a weng nei,\nHullareidium Hullareidium\ndou bleims a schäi safti und brenner ned nei \nHullareidium Hullareidium." },
             { id: 18, title: "Wenn I ins Dorf nei reit", lyrics: "Wenn I ins Dorf nei reit\nund mei schwarz Hengstla schreit\nnou wos mei Schozerla \netz kumm i glei" },
             { id: 19, title: "Wenn i ham kumm", lyrics: "Wenn i ham kumm, gäih ums Haus rum und am Kammerfenster klopf i ouh, \nwenn mei frau frocht wer draußn is soch i rumbl bumbl die Mo" },
-            { id: 20, title: "Und do ham ane gsunga", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "gsunga.mp3" },
+            { id: 20, title: "Und do ham a nix gsunga", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "gsunga.mp3" },
             { id: 21, title: "Wenn die Almashiefer kumma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "wenn die almoshiefer kumma.mp3" },
-            { id: 22, title: "Ja die Beicha ihre Madla", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "buecher madla.mp3" },
+            { id: 22, title: "Ja die Peicha ihre Madla", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "buecher madla.mp3" },
             { id: 23, title: "Kärwa ist kumma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "kaerwa ist kumma.mp3" },
             { id: 24, title: "Was ist denn des für Lärma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "laerm.mp3" },
             { id: 25, title: "Nieber, rieber, nauf und ro", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "nueber.mp3" },
@@ -164,11 +191,73 @@
             { id: 27, title: "Ja sou weis Almashiefer Kärwala", lyrics: "Ja sou weis Almashiefer Kärwala so wädds ka zweite gehm,\nFidrifi tralala, Fidrifi tralala\nDrum soll ja unsere Kärwa a nu viele Jahre lehm,\nFidrifi tralala, kennst di aus!", audioUrl: "almoshiefer kaerwala.mp3" }
         ];
 
+        // --- DATEN: WÖRTERBUCH ---
+        const franconianDictionary = [
+            { f: "Bassd scho", g: "Sehr gut (Höchstes Lob)" },
+            { f: "Böschla", g: "Burschen / Kärwaburschen" },
+            { f: "Baicher", g: "Einwohner vom Nachbarort Buch" },
+            { f: "Brunst", g: "Pinkelt (oder hier beim Kochen: brennt an)" },
+            { f: "Bumbl", g: "Glocke / Aufregung" },
+            { f: "Dout", g: "Tut" },
+            { f: "Gehm / Lehm", g: "Geben / Leben" },
+            { f: "Gerumbl", g: "Gerümpel / Chaos" },
+            { f: "Gflocht", g: "Geflucht" },
+            { f: "Graina", g: "Weinen" },
+            { f: "Gschra", g: "Geschrei" },
+            { f: "Gstanzla", g: "Kurzes, lustiges Spottlied" },
+            { f: "Madla", g: "Mädchen" },
+            { f: "Muggn", g: "Mücken" },
+            { f: "Nauf / Ro", g: "Hinauf / Hinunter" },
+            { f: "Nieber / Rieber", g: "Hinüber / Herüber" },
+            { f: "Oarsch", g: "Hintern" },
+            { f: "Schäi", g: "Schön" },
+            { f: "Schotzala", g: "Schätzchen" }
+        ];
+
         let activeSongId = 1;
         let isRecording = false;
         let practiceMode = false;
         let recognition = null;
         let fullTranscript = "";
+
+        // Tab Navigation Logic
+        window.switchTab = function(tabId) {
+            // Alle Tabs verstecken
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.add('hidden'));
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('block'));
+            
+            // Alle Buttons zurücksetzen
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-md', 'border-[#c3242a]', 'text-[#c3242a]');
+                btn.classList.add('bg-transparent', 'hover:bg-[#fff8e7]', 'border-transparent', 'text-[#c3242a]');
+            });
+
+            // Geklickten Tab anzeigen
+            document.getElementById(tabId).classList.remove('hidden');
+            document.getElementById(tabId).classList.add('block');
+            
+            // Aktiven Button hervorheben
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.add('bg-white', 'shadow-md', 'border-[#c3242a]', 'text-[#c3242a]');
+            activeBtn.classList.remove('bg-transparent', 'hover:bg-[#fff8e7]', 'border-transparent');
+
+            // Layout anpassen (Sidebar ausblenden wenn Wörterbuch aktiv ist)
+            const mainContainer = document.getElementById('main-container');
+            const sidebar = document.getElementById('sidebar-songs');
+            const contentArea = document.getElementById('content-area');
+
+            if(tabId === 'tab-dictionary') {
+                sidebar.classList.add('hidden');
+                contentArea.classList.add('hidden');
+            } else {
+                sidebar.classList.remove('hidden');
+                contentArea.classList.remove('hidden');
+            }
+
+            // Audio stoppen wenn Tab gewechselt wird
+            document.getElementById('audio-player').pause();
+            if(isRecording) stopRecording();
+        }
 
         // Levenshtein Algorithm for Fuzzy Matching
         function getLevenshteinDistance(a, b) {
@@ -181,9 +270,9 @@
                         matrix[i][j] = matrix[i - 1][j - 1];
                     } else {
                         matrix[i][j] = Math.min(
-                            matrix[i - 1][j - 1] + 1, // substitution
-                            matrix[i][j - 1] + 1,     // insertion
-                            matrix[i - 1][j] + 1      // deletion
+                            matrix[i - 1][j - 1] + 1,
+                            matrix[i][j - 1] + 1,
+                            matrix[i - 1][j] + 1
                         );
                     }
                 }
@@ -221,13 +310,14 @@
             return Math.min(Math.max(Math.round(score), 0), 100);
         }
 
-        // Initialize UI Elements safely
         document.addEventListener('DOMContentLoaded', () => {
             const songListEl = document.getElementById('song-list');
             const songTitleEl = document.getElementById('active-song-title');
+            const practiceSongTitleEl = document.getElementById('practice-song-title');
             const songLyricsEl = document.getElementById('active-song-lyrics');
             const audioContainerEl = document.getElementById('audio-container');
             const audioPlayerEl = document.getElementById('audio-player');
+            const dictionaryGrid = document.getElementById('dictionary-grid');
             
             const btnLearnMode = document.getElementById('btn-learn-mode');
             const learnIcon = document.getElementById('learn-icon');
@@ -245,6 +335,15 @@
             const scorePercent = document.getElementById('score-percent');
             const scoreIconBox = document.getElementById('score-icon-box');
 
+            function renderDictionary() {
+                dictionaryGrid.innerHTML = franconianDictionary.map(word => `
+                    <div class="bg-white p-4 rounded-xl border-2 border-[#f4aa26] shadow-sm flex flex-col justify-center text-center">
+                        <span class="font-black text-lg text-[#c3242a] mb-1">${word.f}</span>
+                        <span class="text-sm text-slate-600 font-medium">${word.g}</span>
+                    </div>
+                `).join('');
+            }
+
             function renderSongList() {
                 songListEl.innerHTML = kaerwaLieder.map(song => `
                     <button onclick="selectSong(${song.id})" id="song-btn-${song.id}" class="w-full text-left p-3 my-1.5 rounded-xl transition-all duration-200 flex items-center justify-between group text-slate-700 hover:bg-[#fde68a] border-2 border-transparent text-sm">
@@ -256,7 +355,6 @@
             }
 
             window.selectSong = function(id) {
-                // Reset active styles (Angepasst an neues Design)
                 const oldBtn = document.getElementById(`song-btn-${activeSongId}`);
                 if (oldBtn) {
                     oldBtn.classList.remove('bg-[#f4aa26]', 'text-[#c3242a]', 'font-black', 'border-[#c3242a]', 'shadow-sm');
@@ -266,7 +364,6 @@
                 activeSongId = id;
                 const song = kaerwaLieder.find(s => s.id === id);
                 
-                // Set active styles (Angepasst an neues Design)
                 const activeBtn = document.getElementById(`song-btn-${id}`);
                 if (activeBtn) {
                     activeBtn.classList.remove('text-slate-700', 'hover:bg-[#fde68a]', 'border-transparent');
@@ -274,6 +371,7 @@
                 }
 
                 songTitleEl.textContent = song.title;
+                practiceSongTitleEl.textContent = song.title;
                 songLyricsEl.textContent = song.lyrics;
                 
                 if (practiceMode) {
@@ -292,6 +390,11 @@
 
                 resultsSection.classList.add('hidden');
                 if (isRecording) stopRecording();
+
+                // Falls jemand im Wörterbuch ist und ein Lied wählt, springen wir zum Lieder-Tab
+                if(document.getElementById('tab-dictionary').classList.contains('block')) {
+                    switchTab('tab-lyrics');
+                }
             }
 
             btnLearnMode.addEventListener('click', () => {
@@ -354,7 +457,6 @@
                     recognition.start();
                     isRecording = true;
                     
-                    // UI Changes für das Plakat-Design
                     btnMic.classList.remove('bg-white', 'text-[#c3242a]', 'hover:bg-slate-50');
                     btnMic.classList.add('bg-[#c3242a]', 'text-white');
                     micStatusText.textContent = "Stoppen";
@@ -370,7 +472,6 @@
                 
                 isRecording = false;
                 
-                // UI Reset für das Plakat-Design
                 btnMic.classList.add('bg-white', 'text-[#c3242a]', 'hover:bg-slate-50');
                 btnMic.classList.remove('bg-[#c3242a]', 'text-white');
                 micStatusText.textContent = "Starten";
@@ -380,6 +481,13 @@
                 setTimeout(() => {
                     const spoken = recognizedTextEl.textContent;
                     const activeSong = kaerwaLieder.find(s => s.id === activeSongId);
+                    
+                    // Check if song has lyrics at all
+                    if(activeSong.lyrics.includes("Text noch nicht vorhanden")) {
+                        recognizedTextEl.textContent = "Hier gibt es noch keinen Text zum Prüfen!";
+                        return;
+                    }
+
                     const score = calculateMatchScore(activeSong.lyrics, spoken);
                     
                     scorePercent.textContent = score + "%";
@@ -405,16 +513,15 @@
             }
 
             btnMic.addEventListener('click', () => {
-                if (isRecording) {
-                    stopRecording();
-                } else {
-                    startRecording();
-                }
+                if (isRecording) stopRecording();
+                else startRecording();
             });
 
             // Start App
+            renderDictionary();
             renderSongList();
             selectSong(1);
+            switchTab('tab-lyrics'); // Set default tab
         });
     </script>
 </body>
