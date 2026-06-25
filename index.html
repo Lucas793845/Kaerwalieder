@@ -113,23 +113,15 @@
                         </div>
                         <div id="score-percent" class="text-2xl md:text-3xl font-black">0%</div>
                     </div>
-                </div>
-                
-            </div>
-        </div>
-    </main>
-
-    <footer class="bg-slate-800 text-slate-400 text-center py-4 text-xs border-t border-slate-700 mt-6">
-        <p>© 2026 Kärwalieder Trainer App • Mit integrierter Fränkisch-Fehlertoleranz</p>
-    </footer>
-
+    <!-- APP LOGIC -->
     <script>
+        // Data block
         const kaerwaLieder = [
             { id: 1, title: "Almashiefer Schlössla", lyrics: "Und des Almashiefer Schlössla des is schäi beisam.\nHullareidium Hullareidium\nUnd die Almashiefer Böschla däi hald´n schäi zamm\nHullarei di rei di um" },
             { id: 2, title: "Schwatze Stieferla", lyrics: "Schwatze Stieferla, weiße Schätza und a schneidigs Häidla auf\nAlmashiefer Kärwabäschla immer lustig und wohl auf." },
             { id: 3, title: "Däi Sunna (Sonne)", lyrics: "Däi Sunna däi dout scheina und dreht si um die Wolkn rum \nMei Schotzala dout graina weil ich sulang ned kumm.", audioUrl: "sonne.mp3" },
             { id: 4, title: "13, 14, 15 Muggn (Mücken)", lyrics: "13, 14, 15 Muggn gem a goude Metzelsuppn is der Schneider nu so gla kieft er an an Muggerbaa.", audioUrl: "muecken.mp3" },
-            { id: 5, title: "Mei Vadder", lyrics: "Mei Vadder ist im Himmel drom,\nund ich bin auf der Weld,\nFidrifi Drala La, Fidrifi Drala La\nDer mou mi ganz vergessn hom,\nder Schickt ma gorka Geld \nFidrifi Drala La, Kennst di aus!" },
+            { id: 5, title: "Mei Vadder", lyrics: "Mei Vadder ist im Himmel drom,\nund ich bin auf der Weld,\nFidrifi Drala La, Fidrifi Drala La\nDer mou mi ganz vergessn hom,\nder Schickt ma gorka Geld \nFidrifi Drala La, Kennst di aus!", audioUrl: "mei_vadder.mp3" },
             { id: 6, title: "Hinder der Stodltür", lyrics: "Hinder der Stodltür \nHänger zwa Ochsagschür \nKumma zwa Baicher rei\nDie spann ma ei." },
             { id: 7, title: "Und schäi hams uns zam gstellt", lyrics: "Und schäi hams uns zam gstellt Und schäi schauma aus\nTroie troie troium\nUnd etz schauma scho bald wie tiroler-boum aus \nTroie troie troium" },
             { id: 8, title: "Kennst di aus", lyrics: "Kennst di aus in meim Kämmerla, kennst di aus in meim Bed\nTroie troie troium\nHost scho oft bei mir gschlofa aber däft hob I ned\nTroie troie troium" },
@@ -143,7 +135,15 @@
             { id: 16, title: "Madla von Schillingsfirst", lyrics: "Ich hab a mal Madla kappt des war von Schillingsfirst,\nfidrifidralala, fidrifidralala\ndi hat noch gar kann drinna kappt die habbi 3 Tag bürscht" },
             { id: 17, title: "Mei Mudda kocht Nudeln", lyrics: "Mei Mudda kocht Nudeln und brunst a weng nei,\nHullareidium Hullareidium\ndou bleims a schäi safti und brenner ned nei \nHullareidium Hullareidium." },
             { id: 18, title: "Wenn I ins Dorf nei reit", lyrics: "Wenn I ins Dorf nei reit\nund mei schwarz Hengstla schreit\nnou wos mei Schozerla \netz kumm i glei" },
-            { id: 19, title: "Wenn i ham kumm", lyrics: "Wenn i ham kumm, gäih ums Haus rum und am Kammerfenster klopf i ouh, \nwenn mei frau frocht wer draußn is soch i rumbl bumbl die Mo" }
+            { id: 19, title: "Wenn i ham kumm", lyrics: "Wenn i ham kumm, gäih ums Haus rum und am Kammerfenster klopf i ouh, \nwenn mei frau frocht wer draußn is soch i rumbl bumbl die Mo" },
+            { id: 20, title: "Und do ham a nix gsunga", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "gsunga.mp3" },
+            { id: 21, title: "Wenn die Almashiefer kumma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "wenn_die_almoshiefer_kumma.mp3" },
+            { id: 22, "title": "Ja die Peicha ihre Madla", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "buecher_madla.mp3" },
+            { id: 23, title: "Kärwa ist kumma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "kaerwa_ist_kumma.mp3" },
+            { id: 24, title: "Was ist denn des für Lärma", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "laerm.mp3" },
+            { id: 25, title: "Nieber, rieber, nauf und ro", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "nueber.mp3" },
+            { id: 26, title: "Geh Madla lous di ficka", lyrics: "Text noch nicht vorhanden. Hör dir die Aufnahme an!", audioUrl: "gei_madla.mp3" },
+            { id: 27, title: "Ja sou weis Almashiefer Kärwala", lyrics: "Ja sou weis Almashiefer Kärwala so wädds ka zweite gehm,\nFidrifi tralala, Fidrifi tralala\nDrum soll ja unsere Kärwa a nu viele Jahre lehm,\nFidrifi tralala, kennst di aus!", audioUrl: "almoshiefer_kaerwala.mp3" }
         ];
 
         let activeSongId = 1;
