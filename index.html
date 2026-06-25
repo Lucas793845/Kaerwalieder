@@ -5,173 +5,270 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Schloßkärwa Almoshof Trainer</title>
     
-    <!-- Anti-Caching: Zwingt den Browser immer die neueste Version von GitHub zu laden -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Custom CSS für moderne Animationen & Styling -->
     <style>
-        .custom-scrollbar::-webkit-scrollbar { width: 8px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #fde68a; border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c3242a; border-radius: 10px; border: 2px solid #fde68a; }
-        .blur-text { filter: blur(6px); user-select: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap');
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        /* Schöne, unauffällige Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { 
+            background: #cbd5e1; 
+            border-radius: 10px; 
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #eab308; }
+
+        /* Blur-Effekt für den Lern-Modus */
+        .blur-text { 
+            filter: blur(8px); 
+            user-select: none; 
+            opacity: 0.6;
+            transition: all 0.4s ease;
+        }
+
+        /* Weiche Einblend-Animationen */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Moderne Glow-Schatten */
+        .glow-shadow {
+            box-shadow: 0 10px 40px -10px rgba(195, 36, 42, 0.15);
+        }
+        .glow-shadow-yellow {
+            box-shadow: 0 10px 40px -10px rgba(244, 170, 38, 0.3);
+        }
+
+        /* Lieder-Liste Hover Effekt */
+        .song-item {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .song-item:hover {
+            transform: translateX(5px);
+            background-color: white;
+            border-color: #fde68a;
+        }
         
-        /* Smooth transitions für Tabs */
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Glassmorphismus für den Textbereich */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
         }
     </style>
 </head>
-<!-- Das warme Gelb-Orange vom Plakat als Hintergrund, tiefes Rot als Akzent -->
-<body class="bg-[#f4aa26] text-slate-900 font-sans min-h-screen flex flex-col">
+<body class="text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden">
 
-    <!-- PASSWORD OVERLAY -->
-    <div id="password-overlay" class="fixed inset-0 z-50 bg-[#c3242a] flex items-center justify-center p-4">
-        <div class="bg-white p-8 rounded-2xl shadow-2xl border-4 border-[#f4aa26] text-center w-full max-w-sm">
-            <h2 class="text-2xl font-black text-[#c3242a] mb-2">Halt, stop!</h2>
-            <p class="text-sm font-bold text-slate-600 mb-6">Nur für echte Kärwaboum & -madla</p>
-            <input type="password" id="password-input" placeholder="Passwort" class="w-full p-4 mb-4 border-2 border-[#f4aa26] rounded-xl focus:outline-none focus:border-[#c3242a] text-center font-bold text-lg">
-            <button onclick="checkPassword()" class="w-full bg-[#f4aa26] text-[#c3242a] border-2 border-[#c3242a] font-black py-4 rounded-xl hover:bg-[#ffbf40] transition-colors shadow-md">Eintreten</button>
+    <!-- PASSWORD OVERLAY (Mit weichem Blur-Hintergrund) -->
+    <div id="password-overlay" class="fixed inset-0 z-50 bg-[#c3242a]/90 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-500">
+        <div class="bg-white p-10 rounded-[2rem] shadow-2xl text-center w-full max-w-sm transform scale-100 transition-transform duration-300 border-b-8 border-[#f4aa26]">
+            <div class="w-20 h-20 bg-[#fde68a] rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
+                <i data-lucide="lock" class="w-10 h-10 text-[#c3242a]"></i>
+            </div>
+            <h2 class="text-3xl font-black text-[#c3242a] mb-2 tracking-tight">Halt, stop!</h2>
+            <p class="text-sm font-semibold text-slate-500 mb-8 uppercase tracking-wider">Nur für Kärwaboum & -madla</p>
+            <input type="password" id="password-input" placeholder="Passwort eingeben" class="w-full p-4 mb-6 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-[#f4aa26] focus:bg-white text-center font-bold text-lg transition-all shadow-sm">
+            <button onclick="checkPassword()" class="w-full bg-[#c3242a] text-white font-black py-4 rounded-2xl hover:bg-[#a01c22] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0">
+                Eintreten
+            </button>
         </div>
     </div>
 
-    <!-- Header im Plakat-Style (OHNE DATUM) -->
-    <header class="bg-[#c3242a] text-white pt-6 pb-4 shadow-md relative overflow-hidden">
-        <!-- Kleine Kärwa-Deko im Hintergrund -->
-        <i data-lucide="flag" class="absolute right-[-20px] top-[-20px] w-64 h-64 text-white opacity-10 rotate-12"></i>
+    <!-- Moderner Header mit Gradient und Pattern -->
+    <header class="bg-gradient-to-br from-[#c3242a] to-[#9b191e] text-white pt-8 pb-12 shadow-lg relative overflow-hidden">
+        <!-- Dekoratives Hintergrundmuster (Punkte) -->
+        <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(white 2px, transparent 2px); background-size: 30px 30px;"></div>
         
-        <div class="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10 px-4">
-            <h2 class="text-lg md:text-xl font-bold tracking-wider mb-0 text-white/90">Schloßkärwa in</h2>
-            <h1 class="text-5xl md:text-7xl font-black tracking-tighter mb-4 mt-[-4px] drop-shadow-lg">ALMOSHOF</h1>
+        <div class="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10 px-4 mt-4">
+            <span class="px-4 py-1.5 bg-white/20 backdrop-blur-sm rounded-full text-sm font-bold tracking-widest uppercase mb-4 shadow-sm border border-white/30">
+                Schloßkärwa Trainer
+            </span>
+            <h1 class="text-6xl md:text-8xl font-black tracking-tighter drop-shadow-xl text-transparent bg-clip-text bg-gradient-to-b from-white to-[#fde68a]">
+                ALMOSHOF
+            </h1>
         </div>
     </header>
 
-    <!-- Navigation / Tabs -->
-    <nav class="bg-[#fde68a] border-b-4 border-white shadow-md sticky top-0 z-20">
-        <div class="max-w-6xl mx-auto p-2 flex justify-center gap-2 md:gap-4 flex-wrap">
-            <button onclick="switchTab('tab-lyrics')" id="btn-tab-lyrics" class="nav-btn bg-white shadow-md border-2 border-[#c3242a] text-[#c3242a] px-4 md:px-6 py-2 rounded-full font-black text-sm md:text-base flex items-center gap-2 transition-all">
-                <i data-lucide="music" class="w-4 h-4"></i> Lieder
+    <!-- Schwebende Navigation (Glas-Effekt) -->
+    <div class="flex justify-center -mt-8 relative z-20 px-4">
+        <nav class="bg-white/90 backdrop-blur-md border border-slate-100 shadow-xl rounded-full p-2 flex gap-2 flex-wrap">
+            <button onclick="switchTab('tab-lyrics')" id="btn-tab-lyrics" class="nav-btn active-nav px-6 py-3 rounded-full font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-300">
+                <i data-lucide="music-4" class="w-5 h-5"></i> <span class="hidden sm:inline">Lieder</span>
             </button>
-            <button onclick="switchTab('tab-practice')" id="btn-tab-practice" class="nav-btn bg-transparent hover:bg-[#fff8e7] border-2 border-transparent text-[#c3242a] px-4 md:px-6 py-2 rounded-full font-black text-sm md:text-base flex items-center gap-2 transition-all">
-                <i data-lucide="mic-2" class="w-4 h-4"></i> Singen üben
+            <button onclick="switchTab('tab-practice')" id="btn-tab-practice" class="nav-btn text-slate-500 hover:text-slate-800 hover:bg-slate-50 px-6 py-3 rounded-full font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-300">
+                <i data-lucide="mic-2" class="w-5 h-5"></i> <span class="hidden sm:inline">Singen üben</span>
             </button>
-            <button onclick="switchTab('tab-dictionary')" id="btn-tab-dictionary" class="nav-btn bg-transparent hover:bg-[#fff8e7] border-2 border-transparent text-[#c3242a] px-4 md:px-6 py-2 rounded-full font-black text-sm md:text-base flex items-center gap-2 transition-all">
-                <i data-lucide="book" class="w-4 h-4"></i> Wörterbuch
+            <button onclick="switchTab('tab-dictionary')" id="btn-tab-dictionary" class="nav-btn text-slate-500 hover:text-slate-800 hover:bg-slate-50 px-6 py-3 rounded-full font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-300">
+                <i data-lucide="book-a" class="w-5 h-5"></i> <span class="hidden sm:inline">Wörterbuch</span>
             </button>
-        </div>
-    </nav>
+        </nav>
+    </div>
 
-    <!-- Main Content Layout -->
-    <main id="main-container" class="max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 flex-grow">
+    <!-- Main Content Grid -->
+    <main id="main-container" class="max-w-7xl w-full mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow mt-4">
         
-        <!-- Sidebar: Liederliste (Bleibt bei Lieder & Singen sichtbar, verschwindet bei Wörterbuch) -->
-        <div id="sidebar-songs" class="md:col-span-1 bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] overflow-hidden flex flex-col h-[50vh] md:h-[70vh]">
-            <div class="p-4 bg-[#c3242a] text-white border-b-4 border-[#f4aa26] flex items-center gap-2">
-                <i data-lucide="list-music" class="w-5 h-5 text-[#f4aa26]"></i>
-                <h2 class="font-bold text-lg">Gstanzln</h2>
+        <!-- Moderne Sidebar -->
+        <div id="sidebar-songs" class="lg:col-span-4 bg-white rounded-[2rem] glow-shadow overflow-hidden flex flex-col h-[60vh] lg:h-[75vh] border border-slate-100">
+            <div class="p-6 bg-gradient-to-r from-slate-50 to-white border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-[#fde68a]/30 rounded-xl">
+                        <i data-lucide="list-music" class="w-5 h-5 text-[#f4aa26]"></i>
+                    </div>
+                    <h2 class="font-extrabold text-lg text-slate-800">Alle Gstanzln</h2>
+                </div>
+                <span class="text-xs font-bold bg-slate-100 text-slate-500 px-3 py-1 rounded-full" id="song-count">27</span>
             </div>
-            <div id="song-list" class="overflow-y-auto p-2 flex-grow custom-scrollbar bg-[#fff8e7]"></div>
+            <div id="song-list" class="overflow-y-auto p-3 flex-grow custom-scrollbar space-y-1">
+                <!-- Generiert per JS -->
+            </div>
         </div>
 
-        <!-- Content Area: Für Tabs zuständig -->
-        <div id="content-area" class="md:col-span-2 flex flex-col gap-6">
+        <!-- Content Area -->
+        <div id="content-area" class="lg:col-span-8 flex flex-col gap-8 relative">
             
             <!-- TAB 1: Lieder lesen -->
-            <div id="tab-lyrics" class="tab-content bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 block fade-in">
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-                    <h2 id="active-song-title" class="text-xl md:text-2xl font-black text-[#c3242a]">Lade Lied...</h2>
-                    <button id="btn-learn-mode" class="flex items-center gap-2 px-4 py-2 bg-white hover:bg-[#fde68a] text-[#c3242a] rounded-lg text-xs font-bold transition-colors border-2 border-[#c3242a] shadow-sm">
-                        <i data-lucide="eye-off" class="w-4 h-4" id="learn-icon"></i>
-                        <span id="learn-text">Lern-Modus (Text verdecken)</span>
+            <div id="tab-lyrics" class="tab-content active bg-white rounded-[2rem] glow-shadow border border-slate-100 p-6 md:p-10">
+                
+                <!-- Animierter Header Bereich -->
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 border-b border-slate-100 pb-6">
+                    <h2 id="active-song-title" class="text-2xl md:text-3xl font-black text-slate-800 tracking-tight transition-all">Lade Lied...</h2>
+                    
+                    <button id="btn-learn-mode" class="group flex items-center gap-2 px-5 py-2.5 bg-slate-50 hover:bg-[#c3242a] text-slate-600 hover:text-white rounded-xl text-sm font-bold transition-all duration-300 border border-slate-200 hover:border-transparent hover:shadow-lg">
+                        <i data-lucide="eye-off" class="w-4 h-4 transition-transform group-hover:scale-110" id="learn-icon"></i>
+                        <span id="learn-text">Lern-Modus</span>
                     </button>
                 </div>
 
-                <div id="active-song-lyrics" class="text-base md:text-lg leading-relaxed whitespace-pre-wrap p-5 rounded-xl border-2 bg-white border-[#f4aa26] text-slate-800 font-medium transition-all duration-300 shadow-inner"></div>
+                <!-- Moderner Textbereich (Glassmorphism) -->
+                <div class="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#fffdf5] to-[#fffaf0] border border-[#fde68a]/50 p-1 glow-shadow-yellow">
+                    <div class="absolute top-0 left-0 w-2 h-full bg-[#f4aa26]"></div>
+                    <div id="active-song-lyrics" class="text-lg md:text-xl leading-relaxed whitespace-pre-wrap p-8 text-slate-700 font-medium transition-all duration-500 pl-10"></div>
+                </div>
 
-                <div id="audio-container" class="mt-4 p-4 bg-[#fde68a] rounded-xl border-2 border-[#f4aa26] hidden">
-                    <p class="text-sm text-[#c3242a] font-black mb-2 flex items-center gap-2">
-                        <i data-lucide="volume-2" class="w-4 h-4"></i> Original-Aufnahme zum Anhören
-                    </p>
-                    <audio id="audio-player" controls class="w-full h-10 outline-none"></audio>
+                <!-- Eleganter Audio Player -->
+                <div id="audio-container" class="mt-8 p-5 bg-slate-50 rounded-2xl border border-slate-100 hidden transition-all duration-300">
+                    <div class="flex items-center gap-3 mb-3">
+                        <div class="p-1.5 bg-red-100 rounded-full text-[#c3242a]">
+                            <i data-lucide="headphones" class="w-4 h-4"></i>
+                        </div>
+                        <p class="text-sm font-bold text-slate-600">Original-Aufnahme</p>
+                    </div>
+                    <audio id="audio-player" controls class="w-full h-10 outline-none rounded-lg"></audio>
                 </div>
             </div>
 
             <!-- TAB 2: Singen & Prüfen -->
-            <div id="tab-practice" class="tab-content bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 hidden fade-in">
+            <div id="tab-practice" class="tab-content bg-white rounded-[2rem] glow-shadow border border-slate-100 p-6 md:p-10">
                 
-                <h3 class="text-lg font-black text-[#c3242a] mb-4 flex items-center gap-2">
-                    <i data-lucide="mic" class="w-6 h-6"></i> Singen & Üben
-                </h3>
-
-                <!-- Text-Anzeige im Singen-Tab -->
-                <div class="mb-6">
-                    <p class="text-xs font-bold uppercase tracking-wider text-[#c3242a] mb-2 opacity-70">Aktueller Liedtext:</p>
-                    <div id="practice-lyrics" class="text-base md:text-lg leading-relaxed whitespace-pre-wrap p-4 rounded-xl border-2 bg-white border-[#f4aa26] text-slate-800 font-medium transition-all duration-300 shadow-inner"></div>
-                </div>
-                
-                <div class="bg-white border-2 border-[#f4aa26] text-slate-700 p-4 rounded-xl text-xs flex gap-3 mb-6 shadow-sm">
-                    <i data-lucide="info" class="w-5 h-5 flex-shrink-0 text-[#c3242a] mt-0.5"></i>
-                    <p><strong>Dialekt-Hinweis:</strong> Die Browser-Erkennung erwartet Hochdeutsch. Singe trotzdem Fränkisch los! Die App prüft, ob der Text sinngemäß passt.</p>
+                <div class="flex items-center gap-4 mb-8 pb-6 border-b border-slate-100">
+                    <div class="p-3 bg-blue-50 text-blue-600 rounded-2xl">
+                        <i data-lucide="mic" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-slate-800 tracking-tight">Singen & Üben</h3>
                 </div>
 
-                <div class="flex flex-col items-center justify-center p-6 bg-[#fde68a] rounded-xl border-2 border-dashed border-[#c3242a]">
-                    <button id="btn-mic" class="flex flex-col items-center justify-center w-24 h-24 rounded-full transition-all duration-300 shadow-lg bg-white border-4 border-[#c3242a] text-[#c3242a] active:scale-95 group">
-                        <i data-lucide="mic" class="w-8 h-8 mb-1"></i>
-                        <span id="mic-status-text" class="font-black text-[10px] uppercase">Starten</span>
+                <!-- Text-Anzeige klein -->
+                <div class="mb-8">
+                    <div class="flex items-center gap-2 mb-3">
+                        <i data-lucide="text" class="w-4 h-4 text-slate-400"></i>
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Aktueller Liedtext</p>
+                    </div>
+                    <div id="practice-lyrics" class="text-base leading-relaxed whitespace-pre-wrap p-6 rounded-2xl bg-slate-50 text-slate-600 border border-slate-100 font-medium transition-all duration-500"></div>
+                </div>
+
+                <!-- Aufnahme Bereich mit Puls-Animation -->
+                <div class="flex flex-col items-center justify-center py-12 px-6 bg-gradient-to-b from-white to-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200 relative overflow-hidden transition-all duration-300" id="mic-zone">
+                    
+                    <!-- Animierte Kreise im Hintergrund beim Aufnehmen -->
+                    <div id="mic-pulse-1" class="absolute w-40 h-40 bg-red-100 rounded-full opacity-0 transition-opacity duration-300"></div>
+                    <div id="mic-pulse-2" class="absolute w-56 h-56 bg-red-50 rounded-full opacity-0 transition-opacity duration-300"></div>
+
+                    <button id="btn-mic" class="relative z-10 flex flex-col items-center justify-center w-28 h-28 rounded-full transition-all duration-300 shadow-xl bg-white border border-slate-100 text-[#c3242a] hover:scale-105 active:scale-95 group">
+                        <i data-lucide="mic" class="w-10 h-10 mb-1 transition-transform group-hover:-translate-y-1"></i>
+                        <span id="mic-status-text" class="font-black text-[11px] uppercase tracking-wider">Starten</span>
                     </button>
-                    <p id="recording-indicator" class="mt-2 text-sm font-black text-[#c3242a] animate-pulse hidden">Ich höre zu... Sing los!</p>
+                    <p id="recording-indicator" class="mt-6 text-sm font-bold text-[#c3242a] animate-bounce hidden relative z-10">Ich höre zu... Sing los!</p>
                 </div>
 
-                <div id="results-section" class="mt-5 hidden">
-                    <div class="p-3 bg-white rounded-lg text-slate-600 italic mb-4 text-xs border border-[#f4aa26]">
-                        <span class="font-black block mb-1 text-[10px] text-slate-400 uppercase tracking-tight">Verstanden:</span>
-                        <span id="recognized-text">...</span>
+                <!-- Modernes Ergebnis Banner -->
+                <div id="results-section" class="mt-8 hidden transform transition-all duration-500 translate-y-4 opacity-0">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3 ml-1">Verstandener Text</p>
+                    <div class="p-4 bg-slate-50 rounded-2xl text-slate-600 italic mb-6 text-sm border border-slate-100 shadow-inner">
+                        "<span id="recognized-text">...</span>"
                     </div>
 
-                    <div id="score-banner" class="p-4 rounded-xl flex items-center justify-between text-white shadow-md border-2 border-white">
-                        <div class="flex items-center gap-3">
-                            <div id="score-icon-box" class="p-1.5 bg-white/20 rounded-full"></div>
+                    <div id="score-banner" class="p-6 rounded-2xl flex items-center justify-between text-white shadow-xl transition-all duration-500 transform hover:scale-[1.02]">
+                        <div class="flex items-center gap-4">
+                            <div id="score-icon-box" class="p-3 bg-white/20 rounded-2xl backdrop-blur-sm"></div>
                             <div>
-                                <p id="score-headline" class="font-black text-base md:text-lg">Bassd scho!</p>
+                                <p class="text-sm font-semibold opacity-90 uppercase tracking-wider mb-1">Ergebnis</p>
+                                <p id="score-headline" class="font-black text-xl md:text-2xl tracking-tight">Bassd scho!</p>
                             </div>
                         </div>
-                        <div id="score-percent" class="text-2xl md:text-3xl font-black">0%</div>
+                        <div id="score-percent" class="text-4xl md:text-5xl font-black tracking-tighter">0%</div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- TAB 3: Wörterbuch (Nimmt ganze Breite ein) -->
-        <div id="tab-dictionary" class="tab-content md:col-span-3 bg-[#fff8e7] rounded-2xl shadow-lg border-4 border-[#c3242a] p-5 md:p-6 hidden fade-in">
-            <h2 class="text-2xl font-black text-[#c3242a] mb-6 flex items-center justify-center gap-2">
-                <i data-lucide="book-open" class="w-6 h-6"></i> Das Fränkisch-Lexikon
-            </h2>
+        <!-- TAB 3: Wörterbuch Grid -->
+        <div id="tab-dictionary" class="tab-content lg:col-span-12 bg-white rounded-[2rem] glow-shadow border border-slate-100 p-6 md:p-10">
+            <div class="flex items-center gap-4 mb-10 pb-6 border-b border-slate-100 justify-center">
+                <div class="p-3 bg-[#fde68a]/30 text-[#f4aa26] rounded-2xl">
+                    <i data-lucide="book-open-check" class="w-8 h-8"></i>
+                </div>
+                <h2 class="text-3xl font-black text-slate-800 tracking-tight">Fränkisch Lexikon</h2>
+            </div>
+            
             <div id="dictionary-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                <!-- Lexikon generiert per JS -->
+                <!-- Generiert per JS -->
             </div>
         </div>
 
     </main>
+
+    <!-- Footer -->
+    <footer class="mt-12 py-8 text-center text-slate-400 text-sm font-medium">
+        <p>Gmacht für die Almoshiefer Kärwa</p>
+    </footer>
 
     <!-- APP LOGIC -->
     <script>
         // ==========================================
         // 1. PASSWORT LOGIK
         // ==========================================
-        
-        // HIER DEIN PASSWORT ÄNDERN:
         const PASSWORD = "deinpasswort"; 
 
         function checkPassword() {
             const input = document.getElementById('password-input').value;
+            const overlay = document.getElementById('password-overlay');
             if (input === PASSWORD) {
-                document.getElementById('password-overlay').style.display = 'none';
+                overlay.style.opacity = '0';
+                setTimeout(() => overlay.style.display = 'none', 500); // Weiches Ausblenden
             } else {
-                alert("Des stimmt ned! Probier's nochmal.");
+                const inputEl = document.getElementById('password-input');
+                inputEl.classList.add('border-red-500', 'animate-pulse');
+                setTimeout(() => inputEl.classList.remove('border-red-500', 'animate-pulse'), 1000);
             }
         }
 
@@ -183,7 +280,7 @@
             { id: 2, title: "Schwatze Stieferla", lyrics: "Schwatze Stieferla, weiße Schätza und a schneidigs Häidla auf\nAlmashiefer Kärwabäschla immer lustig und wohl auf." },
             { id: 3, title: "Däi Sunna", lyrics: "Däi Sunna däi dout scheina und dreht si um die Wolkn rum \nMei Schotzala dout graina weil ich sulang ned kumm.", audioUrl: "sonne.mp3" },
             { id: 4, title: "13, 14, 15 Muggn", lyrics: "13, 14, 15 Muggn gem a goude Metzelsuppn is der Schneider nu so gla kieft er an an Muggerbaa.", audioUrl: "muecken.mp3" },
-            { id: 5, title: "Mei Vadder", lyrics: "Mei Vadder ist im Himmel drom,\nund ich bin auf der Weld,\nFidrifi Drala La, Fidrifi Drala La\nDer mou mi ganz vergessn hom,\nder Schickt ma gorka Geld \nFidrifi Drala La, Kennst di aus!", audioUrl: "mei vadda.mp3" },
+            { id: 5, title: "Mei Vadder", lyrics: "Mei Vadder ist im Himmel drom,\nund ich bin auf der Weld,\nFidrifi Drala La, Fidrifi Drala La\nDer mou mi ganz vergessn hom,\nder Schickt ma gorka Geld \nFidrifi Drala La, Kennst di aus!", audioUrl: "mei_vadder.mp3" },
             { id: 6, title: "Hinder der Stodltür", lyrics: "Hinder der Stodltür \nHänger zwa Ochsagschür \nKumma zwa Baicher rei\nDie spann ma ei." },
             { id: 7, title: "Und schäi hams uns zam gstellt", lyrics: "Und schäi hams uns zam gstellt Und schäi schauma aus\nTroie troie troium\nUnd etz schauma scho bald wie tiroler-boum aus \nTroie troie troium" },
             { id: 8, title: "Kennst di aus", lyrics: "Kennst di aus in meim Kämmerla, kennst di aus in meim Bed\nTroie troie troium\nHost scho oft bei mir gschlofa aber däft hob I ned\nTroie troie troium" },
@@ -209,125 +306,109 @@
         ];
 
         const dictWords = [
-            { franken: "Aff", hoch: "Auf" },
-            { franken: "Almashiefer", hoch: "Einwohner von Almoshof" },
-            { franken: "Baicher / Peicha", hoch: "Einwohner von Buch (Nachbarort)" },
-            { franken: "Bassd scho", hoch: "Höchstes Lob (Sehr gut)" },
-            { franken: "Bäschla / Boum", hoch: "Burschen / Jungs" },
-            { franken: "Beidl", hoch: "Geldbeutel" },
-            { franken: "Beisam", hoch: "Beisammen" },
-            { franken: "Bläid", hoch: "Blöd / Dumm" },
-            { franken: "Brunst", hoch: "Pinkelt" },
-            { franken: "Bumbl", hoch: "Glocke / Große Aufregung" },
-            { franken: "Bürscht", hoch: "Gebürstet (Geschlechtsverkehr)" },
-            { franken: "Däft", hoch: "Dürfte / Darf" },
-            { franken: "Dou / Dout", hoch: "Da / Tut" },
-            { franken: "Drom", hoch: "Dort droben" },
-            { franken: "Etza", hoch: "Jetzt" },
-            { franken: "Gehm", hoch: "Geben" },
-            { franken: "Gerumbl", hoch: "Lärm / Chaos" },
-            { franken: "Gflocht", hoch: "Geflucht" },
-            { franken: "Gla", hoch: "Klein" },
-            { franken: "Gorka", hoch: "Gar kein" },
-            { franken: "Graina", hoch: "Weinen" },
-            { franken: "Greits dunnerwätter", hoch: "Kreuzdonnerwetter (Fluch)" },
-            { franken: "Gschra", hoch: "Geschrei" },
-            { franken: "Gsoucht", hoch: "Gesucht" },
-            { franken: "Gstanzla", hoch: "Kurzes, witziges Spottlied" },
-            { franken: "Gstieng", hoch: "Gestiegen" },
-            { franken: "Ham / Hams", hoch: "Haben / Haben sie" },
-            { franken: "Häidla", hoch: "Hütchen / Hut" },
-            { franken: "Kappt", hoch: "Gehabt" },
-            { franken: "Kats", hoch: "Wird es" },
-            { franken: "Kieft", hoch: "Kauft" },
-            { franken: "Kutschen", hoch: "Das Kutschieren / Fahren" },
-            { franken: "Lehm", hoch: "Leben" },
-            { franken: "Madla", hoch: "Mädchen (Plural)" },
-            { franken: "Metzelsuppn", hoch: "Wurstsuppe (vom Schlachten)" },
-            { franken: "Mo", hoch: "Mann" },
-            { franken: "Mou", hoch: "Muss" },
-            { franken: "Muggn", hoch: "Mücken" },
-            { franken: "Muggerbaa", hoch: "Mückenbein" },
-            { franken: "Nieber", hoch: "Hinüber" },
-            { franken: "Nou wos", hoch: "Na was" },
-            { franken: "Orsch / Oarsch", hoch: "Hintern / Arsch" },
-            { franken: "Ouh", hoch: "An / Anklopfen" },
-            { franken: "Rei / Ro", hoch: "Herein / Herunter" },
-            { franken: "Safti", hoch: "Saftig" },
-            { franken: "Schäi", hoch: "Schön" },
-            { franken: "Schauma", hoch: "Schauen wir" },
-            { franken: "Schätza", hoch: "Schürzen" },
-            { franken: "Schozerla / Schotzala", hoch: "Schätzchen" },
-            { franken: "Sulang", hoch: "Solange" },
-            { franken: "Stieferla", hoch: "Stiefelchen / Kleine Stiefel" },
-            { franken: "Vadder", hoch: "Vater" },
-            { franken: "Was", hoch: "Weiß" },
+            { franken: "Aff", hoch: "Auf" }, { franken: "Almashiefer", hoch: "Einwohner von Almoshof" },
+            { franken: "Baicher / Peicha", hoch: "Einwohner von Buch" }, { franken: "Bassd scho", hoch: "Höchstes Lob" },
+            { franken: "Bäschla / Boum", hoch: "Burschen / Jungs" }, { franken: "Beidl", hoch: "Geldbeutel" },
+            { franken: "Beisam", hoch: "Beisammen" }, { franken: "Bläid", hoch: "Blöd / Dumm" },
+            { franken: "Brunst", hoch: "Pinkelt" }, { franken: "Bumbl", hoch: "Große Aufregung / Glocke" },
+            { franken: "Bürscht", hoch: "Geschlechtsverkehr" }, { franken: "Däft", hoch: "Dürfte / Darf" },
+            { franken: "Dou / Dout", hoch: "Da / Tut" }, { franken: "Drom", hoch: "Dort droben" },
+            { franken: "Etza", hoch: "Jetzt" }, { franken: "Gehm", hoch: "Geben" },
+            { franken: "Gerumbl", hoch: "Lärm / Chaos" }, { franken: "Gflocht", hoch: "Geflucht" },
+            { franken: "Gla", hoch: "Klein" }, { franken: "Gorka", hoch: "Gar kein" },
+            { franken: "Graina", hoch: "Weinen" }, { franken: "Greits dunnerwätter", hoch: "Kreuzdonnerwetter" },
+            { franken: "Gschra", hoch: "Geschrei" }, { franken: "Gsoucht", hoch: "Gesucht" },
+            { franken: "Gstanzla", hoch: "Kurzes Spottlied" }, { franken: "Gstieng", hoch: "Gestiegen" },
+            { franken: "Häidla", hoch: "Hütchen / Hut" }, { franken: "Kappt", hoch: "Gehabt" },
+            { franken: "Kats", hoch: "Wird es" }, { franken: "Kieft", hoch: "Kauft" },
+            { franken: "Kutschen", hoch: "Das Kutschieren" }, { franken: "Lehm", hoch: "Leben" },
+            { franken: "Madla", hoch: "Mädchen (Plural)" }, { franken: "Metzelsuppn", hoch: "Wurstsuppe" },
+            { franken: "Mo", hoch: "Mann" }, { franken: "Mou", hoch: "Muss" },
+            { franken: "Muggn", hoch: "Mücken" }, { franken: "Muggerbaa", hoch: "Mückenbein" },
+            { franken: "Nieber", hoch: "Hinüber" }, { franken: "Nou wos", hoch: "Na was" },
+            { franken: "Orsch / Oarsch", hoch: "Hintern" }, { franken: "Ouh", hoch: "An / Anklopfen" },
+            { franken: "Rei / Ro", hoch: "Herein / Herunter" }, { franken: "Safti", hoch: "Saftig" },
+            { franken: "Schäi", hoch: "Schön" }, { franken: "Schauma", hoch: "Schauen wir" },
+            { franken: "Schätza", hoch: "Schürzen" }, { franken: "Schozerla", hoch: "Schätzchen" },
+            { franken: "Sulang", hoch: "Solange" }, { franken: "Stieferla", hoch: "Stiefelchen" },
+            { franken: "Vadder", hoch: "Vater" }, { franken: "Was", hoch: "Weiß" },
             { franken: "Wädds", hoch: "Wird es" }
-        ].sort((a, b) => a.franken.localeCompare(b.franken)); // Alphabetisch sortieren
+        ].sort((a, b) => a.franken.localeCompare(b.franken));
 
 
         // ==========================================
-        // 3. UI STATE LOGIC
+        // 3. UI STATE & ANIMATIONEN LOGIK
         // ==========================================
         let activeSongId = 1;
         let practiceMode = false;
 
-        // TAB WECHSEL LOGIK
         window.switchTab = function(tabId) {
-            // Verstecke alle Tabs
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.getElementById(tabId).classList.remove('hidden');
+            // Ausblenden mit Fade-Out Effekt
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+                setTimeout(() => el.style.display = 'none', 300); // Warte auf Animation
+            });
 
-            // Setze Buttons zurück
+            // Button Styles animieren
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-white', 'shadow-md', 'border-[#c3242a]');
-                btn.classList.add('bg-transparent', 'border-transparent');
+                btn.className = "nav-btn text-slate-500 hover:text-slate-800 hover:bg-slate-50 px-6 py-3 rounded-full font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-300";
             });
             
-            // Aktiver Button Style
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.classList.add('bg-white', 'shadow-md', 'border-[#c3242a]');
-            activeBtn.classList.remove('bg-transparent', 'border-transparent');
+            activeBtn.className = "nav-btn active-nav bg-[#c3242a] text-white shadow-lg px-6 py-3 rounded-full font-bold text-sm md:text-base flex items-center gap-2 transition-all duration-300 transform scale-105";
 
-            // Sidebar Steuerung
-            const sidebar = document.getElementById('sidebar-songs');
-            const mainArea = document.getElementById('content-area');
-            
-            if (tabId === 'tab-dictionary') {
-                sidebar.classList.add('hidden');
-            } else {
-                sidebar.classList.remove('hidden');
-                // Wenn wir zurück zu Text/Singen wechseln, wähle das aktuelle Lied neu, um UI zu aktualisieren
-                selectSong(activeSongId);
-            }
+            // Einblenden mit Fade-In
+            setTimeout(() => {
+                const newTab = document.getElementById(tabId);
+                newTab.style.display = 'block';
+                // Trigger reflow für die Animation
+                void newTab.offsetWidth; 
+                newTab.classList.add('active');
+                
+                const sidebar = document.getElementById('sidebar-songs');
+                if (tabId === 'tab-dictionary') {
+                    sidebar.style.display = 'none';
+                } else {
+                    sidebar.style.display = 'flex';
+                }
+            }, 300);
         }
 
-        // LIED AUSWÄHLEN
         window.selectSong = function(id) {
-            // Styling zurücksetzen
             document.querySelectorAll('.song-list-btn').forEach(btn => {
-                btn.classList.remove('bg-white', 'font-black', 'text-[#c3242a]', 'shadow-sm');
-                btn.classList.add('text-slate-700');
+                btn.classList.remove('bg-white', 'border-slate-200', 'shadow-sm', 'text-[#c3242a]', 'font-bold');
+                btn.classList.add('text-slate-600', 'border-transparent');
+                // Icon verstecken
+                const icon = btn.querySelector('.active-indicator');
+                if(icon) icon.classList.add('opacity-0');
             });
 
             activeSongId = id;
             const song = kaerwaLieder.find(s => s.id === id);
             
-            // Aktives Styling setzen
             const activeBtn = document.getElementById(`song-btn-${id}`);
             if (activeBtn) {
-                activeBtn.classList.remove('text-slate-700');
-                activeBtn.classList.add('bg-white', 'font-black', 'text-[#c3242a]', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600', 'border-transparent');
+                activeBtn.classList.add('bg-white', 'border-slate-200', 'shadow-sm', 'text-[#c3242a]', 'font-bold');
+                const icon = activeBtn.querySelector('.active-indicator');
+                if(icon) icon.classList.remove('opacity-0');
             }
 
-            // Text in BEIDEN Reitern updaten
-            document.getElementById('active-song-title').textContent = `${song.id}. ${song.title}`;
-            document.getElementById('active-song-lyrics').textContent = song.lyrics;
-            document.getElementById('practice-lyrics').textContent = song.lyrics;
+            // Weicher Textwechsel
+            const titleEl = document.getElementById('active-song-title');
+            const lyricsEl1 = document.getElementById('active-song-lyrics');
+            const lyricsEl2 = document.getElementById('practice-lyrics');
             
-            applyLearnModeStyles();
+            [titleEl, lyricsEl1, lyricsEl2].forEach(el => el.style.opacity = '0');
+            
+            setTimeout(() => {
+                titleEl.textContent = `${song.id}. ${song.title}`;
+                lyricsEl1.textContent = song.lyrics;
+                lyricsEl2.textContent = song.lyrics;
+                [titleEl, lyricsEl1, lyricsEl2].forEach(el => el.style.opacity = '1');
+                applyLearnModeStyles();
+            }, 200);
 
-            // Audio Container Handling (nur im Text-Tab)
             const audioContainer = document.getElementById('audio-container');
             const audioPlayer = document.getElementById('audio-player');
             if (song.audioUrl) {
@@ -338,15 +419,20 @@
                 audioPlayer.src = "";
             }
 
-            // Recorder Reset falls offen
-            document.getElementById('results-section').classList.add('hidden');
+            const results = document.getElementById('results-section');
+            results.classList.remove('translate-y-0', 'opacity-100');
+            results.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => results.classList.add('hidden'), 500);
+            
             if (isRecording) stopRecording();
         }
 
-        // LERN-MODUS (BLUR) FÜR BEIDE REITER
         const btnLearnMode = document.getElementById('btn-learn-mode');
         btnLearnMode.addEventListener('click', () => {
             practiceMode = !practiceMode;
+            // Kleiner Button-Klick Effekt
+            btnLearnMode.style.transform = 'scale(0.95)';
+            setTimeout(() => btnLearnMode.style.transform = 'scale(1)', 150);
             applyLearnModeStyles();
         });
 
@@ -361,15 +447,18 @@
                 lyrics2.classList.add('blur-text');
                 text.textContent = "Text anzeigen";
                 icon.setAttribute('data-lucide', 'eye');
+                btnLearnMode.classList.add('bg-[#c3242a]', 'text-white');
+                btnLearnMode.classList.remove('bg-slate-50', 'text-slate-600');
             } else {
                 lyrics1.classList.remove('blur-text');
                 lyrics2.classList.remove('blur-text');
-                text.textContent = "Lern-Modus (Text verdecken)";
+                text.textContent = "Lern-Modus";
                 icon.setAttribute('data-lucide', 'eye-off');
+                btnLearnMode.classList.remove('bg-[#c3242a]', 'text-white');
+                btnLearnMode.classList.add('bg-slate-50', 'text-slate-600');
             }
             lucide.createIcons();
         }
-
 
         // ==========================================
         // 4. SPRACHERKENNUNG & SCORE
@@ -378,6 +467,7 @@
         let recognition = null;
         let fullTranscript = "";
 
+        // Fuzzy Matching Algorithm (unverändert)
         function getLevenshteinDistance(a, b) {
             const matrix = [];
             for (let i = 0; i <= b.length; i++) matrix[i] = [i];
@@ -404,14 +494,7 @@
             const origWords = original.toLowerCase().replace(/[^a-zäöüß0-9 ]/g, '').split(' ');
             const spokWords = spoken.toLowerCase().replace(/[^a-zäöüß0-9 ]/g, '').split(' ');
             let matches = 0, sigWords = 0;
-
-            origWords.forEach(w => {
-                if (w.length > 2) {
-                    sigWords++;
-                    if (spokWords.includes(w)) matches++;
-                }
-            });
-
+            origWords.forEach(w => { if (w.length > 2) { sigWords++; if (spokWords.includes(w)) matches++; }});
             if (sigWords > 0) score = Math.max(score, (matches / sigWords) * 100);
             return Math.min(Math.max(Math.round(score), 0), 100);
         }
@@ -419,7 +502,6 @@
         function initSpeech() {
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SR) return false;
-            
             recognition = new SR();
             recognition.continuous = true;
             recognition.interimResults = true;
@@ -440,16 +522,29 @@
 
         function toggleMicUI(active) {
             const btn = document.getElementById('btn-mic');
+            const pulse1 = document.getElementById('mic-pulse-1');
+            const pulse2 = document.getElementById('mic-pulse-2');
+            const indicator = document.getElementById('recording-indicator');
+            const zone = document.getElementById('mic-zone');
+            
             if (active) {
                 btn.classList.replace('bg-white', 'bg-[#c3242a]');
                 btn.classList.replace('text-[#c3242a]', 'text-white');
+                pulse1.classList.replace('opacity-0', 'opacity-100');
+                pulse2.classList.replace('opacity-0', 'opacity-100');
+                pulse1.classList.add('animate-ping');
+                zone.classList.replace('border-slate-200', 'border-red-300');
                 document.getElementById('mic-status-text').textContent = "Stop";
-                document.getElementById('recording-indicator').classList.remove('hidden');
+                indicator.classList.remove('hidden');
             } else {
                 btn.classList.replace('bg-[#c3242a]', 'bg-white');
                 btn.classList.replace('text-white', 'text-[#c3242a]');
+                pulse1.classList.replace('opacity-100', 'opacity-0');
+                pulse2.classList.replace('opacity-100', 'opacity-0');
+                pulse1.classList.remove('animate-ping');
+                zone.classList.replace('border-red-300', 'border-slate-200');
                 document.getElementById('mic-status-text').textContent = "Starten";
-                document.getElementById('recording-indicator').classList.add('hidden');
+                indicator.classList.add('hidden');
             }
         }
 
@@ -457,7 +552,11 @@
             if (!recognition && !initSpeech()) return alert("Spracherkennung wird leider in diesem Browser nicht unterstützt.");
             fullTranscript = "";
             document.getElementById('recognized-text').textContent = "...";
-            document.getElementById('results-section').classList.add('hidden');
+            
+            const results = document.getElementById('results-section');
+            results.classList.remove('translate-y-0', 'opacity-100');
+            results.classList.add('translate-y-4', 'opacity-0');
+            setTimeout(() => results.classList.add('hidden'), 300);
             
             try {
                 recognition.start();
@@ -477,28 +576,36 @@
                 const score = calculateMatchScore(kaerwaLieder.find(s => s.id === activeSongId).lyrics, spoken);
                 
                 document.getElementById('score-percent').textContent = score + "%";
-                document.getElementById('results-section').classList.remove('hidden');
+                const results = document.getElementById('results-section');
+                results.classList.remove('hidden');
+                
+                // Weiches Einblenden der Ergebnisse
+                setTimeout(() => {
+                    results.classList.remove('translate-y-4', 'opacity-0');
+                    results.classList.add('translate-y-0', 'opacity-100');
+                }, 50);
 
                 const banner = document.getElementById('score-banner');
                 const hl = document.getElementById('score-headline');
                 const box = document.getElementById('score-icon-box');
 
-                banner.className = "p-4 rounded-xl flex items-center justify-between text-white shadow-md border-2 border-white ";
+                banner.className = "p-6 rounded-2xl flex items-center justify-between text-white shadow-xl transition-all duration-500 transform hover:scale-[1.02] ";
+                
                 if (score > 70) {
-                    banner.classList.add('bg-green-600');
+                    banner.classList.add('bg-gradient-to-r', 'from-green-500', 'to-emerald-600');
                     hl.textContent = "Bassd scho! (Klasse)";
-                    box.innerHTML = '<i data-lucide="check-circle" class="w-6 h-6"></i>';
+                    box.innerHTML = '<i data-lucide="check-circle" class="w-8 h-8 text-white"></i>';
                 } else if (score > 35) {
-                    banner.classList.add('bg-amber-600');
+                    banner.classList.add('bg-gradient-to-r', 'from-amber-400', 'to-orange-500');
                     hl.textContent = "Ganz ordentlich (Üb noch)";
-                    box.innerHTML = '<i data-lucide="help-circle" class="w-6 h-6"></i>';
+                    box.innerHTML = '<i data-lucide="help-circle" class="w-8 h-8 text-white"></i>';
                 } else {
-                    banner.classList.add('bg-slate-600');
+                    banner.classList.add('bg-gradient-to-r', 'from-slate-600', 'to-slate-700');
                     hl.textContent = "Naa, des war nix!";
-                    box.innerHTML = '<i data-lucide="x-circle" class="w-6 h-6"></i>';
+                    box.innerHTML = '<i data-lucide="x-circle" class="w-8 h-8 text-white"></i>';
                 }
                 lucide.createIcons();
-            }, 400);
+            }, 600);
         }
 
         document.getElementById('btn-mic').addEventListener('click', () => isRecording ? stopRecording() : startRecording());
@@ -507,31 +614,36 @@
         // 5. INITIALISIERUNG
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Lieder rendern
+            // Moderne Liederliste
             document.getElementById('song-list').innerHTML = kaerwaLieder.map(song => `
-                <button onclick="selectSong(${song.id})" id="song-btn-${song.id}" class="song-list-btn w-full text-left p-3 my-1 rounded-xl transition-all duration-200 flex items-center justify-between text-slate-700 hover:bg-white text-sm border border-transparent">
-                    <span class="truncate pr-2">${song.id}. ${song.title}</span>
-                    ${song.audioUrl ? '<i data-lucide="play" class="w-3.5 h-3.5 text-[#c3242a]/50"></i>' : ''}
+                <button onclick="selectSong(${song.id})" id="song-btn-${song.id}" class="song-list-btn song-item w-full text-left p-3.5 rounded-xl flex items-center justify-between text-slate-600 hover:bg-white text-sm border border-transparent border-b-slate-50 relative overflow-hidden group">
+                    <div class="flex items-center gap-3 relative z-10">
+                        <i data-lucide="chevron-right" class="w-4 h-4 active-indicator opacity-0 transition-opacity text-[#c3242a]"></i>
+                        <span class="truncate pr-2 font-medium">${song.id}. ${song.title}</span>
+                    </div>
+                    ${song.audioUrl ? '<div class="p-1.5 bg-slate-100 rounded-full group-hover:bg-[#fde68a]/50 transition-colors relative z-10"><i data-lucide="play" class="w-3 h-3 text-slate-400 group-hover:text-[#c3242a]"></i></div>' : ''}
                 </button>
             `).join('');
 
-            // Lexikon rendern
+            // Modernes Lexikon Grid
             document.getElementById('dictionary-grid').innerHTML = dictWords.map(word => `
-                <div class="bg-white p-4 rounded-xl shadow-sm border border-[#f4aa26] text-center hover:shadow-md transition-shadow flex flex-col justify-center min-h-[100px]">
-                    <div class="font-black text-lg text-[#c3242a] mb-1 leading-tight">${word.franken}</div>
-                    <div class="text-slate-600 text-sm leading-snug">${word.hoch}</div>
+                <div class="group bg-white p-5 rounded-2xl border border-slate-100 hover:border-[#fde68a] hover:shadow-xl transition-all duration-300 flex flex-col justify-center min-h-[120px] relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-[#fff8e7] to-transparent opacity-50 rounded-bl-full transform group-hover:scale-125 transition-transform"></div>
+                    <div class="font-black text-xl text-[#c3242a] mb-2 leading-tight relative z-10">${word.franken}</div>
+                    <div class="text-slate-500 font-medium text-sm leading-snug relative z-10 flex items-center gap-2">
+                        <i data-lucide="arrow-right" class="w-3 h-3 opacity-50"></i> ${word.hoch}
+                    </div>
                 </div>
             `).join('');
 
-            // Start Setup
             lucide.createIcons();
-            switchTab('tab-lyrics');
             
-            // Password Feld soll mit Enter reagieren
+            // Verstecke die Tabs beim initialen Laden kurz, um die Fade-In Animation sauber zu starten
+            document.getElementById('tab-lyrics').style.display = 'block';
+            setTimeout(() => document.getElementById('tab-lyrics').classList.add('active'), 50);
+
             document.getElementById('password-input').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    checkPassword();
-                }
+                if (e.key === 'Enter') checkPassword();
             });
         });
     </script>
