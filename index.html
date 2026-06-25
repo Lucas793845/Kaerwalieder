@@ -30,6 +30,55 @@
 <!-- Hintergrundfarbe vom Plakat: ein kräftiges Kärwa-Gelb/Orange -->
 <body class="bg-[#f4aa26] text-slate-900 font-sans min-h-screen flex flex-col">
 
+<!-- ... existing code ... -->
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+    <!-- Passwort Sperre (NEU) -->
+    <div id="password-overlay" class="fixed inset-0 z-50 bg-red-700 flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-2xl shadow-xl text-center w-full max-w-sm">
+            <h2 class="text-xl font-bold text-slate-800 mb-4">Nur für Kärwa-Profis!</h2>
+            <input type="password" id="password-input" placeholder="Passwort eingeben" class="w-full p-3 mb-4 border-2 border-slate-200 rounded-xl focus:outline-none focus:border-red-600">
+            <button onclick="checkPassword()" class="w-full bg-red-600 text-white font-bold py-3 rounded-xl hover:bg-red-700 transition">Zugang freischalten</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-red-600 text-white p-5 shadow-md border-b-4 border-amber-400">
+<!-- ... existing code ... -->
+```eof
+
+### 2. Die Prüf-Logik (JavaScript)
+Füge diesen Block ganz oben **innerhalb** deines `<script>`-Bereichs ein (direkt vor `// Data block`):
+
+```html:index.html
+<!-- ... existing code ... -->
+    <!-- APP LOGIC -->
+    <script>
+        // Passwort Schutz (NEU)
+        const PASSWORD = "deinpasswort"; 
+        function checkPassword() {
+            const input = document.getElementById('password-input').value;
+            if (input === PASSWORD) {
+                document.getElementById('password-overlay').style.display = 'none';
+            } else {
+                alert("Des stimmt ned! Probier's nochmal.");
+            }
+        }
+
+        // Data block
+        const kaerwaLieder = [
+<!-- ... existing code ... -->
+```eof
+
+**Was du jetzt noch tun musst:**
+1. Gehe in deiner `index.html` auf GitHub auf Bearbeiten.
+2. Füge den ersten Block unter `<body>` ein.
+3. Füge den zweiten Block oben in den `<script>`-Teil ein.
+4. Ändere im zweiten Block das Wort `"deinpasswort"` in dein gewünschtes Passwort (die Anführungszeichen müssen bleiben!).
+5. Speichere mit "Commit changes".
+
+Wenn dein Freund jetzt auf die Seite geht, sieht er nur noch die Passwort-Abfrage! 🔒
+
     <!-- Header im Stil des Plakats -->
     <header class="bg-[#c3242a] text-white pt-6 pb-4 shadow-md relative overflow-hidden">
         <!-- Zier-Elemente im Hintergrund -->
