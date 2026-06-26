@@ -79,21 +79,6 @@
 </head>
 <body class="text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden">
 
-    <!-- PASSWORD OVERLAY (Mit weichem Blur-Hintergrund) -->
-    <div id="password-overlay" class="fixed inset-0 z-50 bg-[#c3242a]/90 backdrop-blur-md flex items-center justify-center p-4 transition-opacity duration-500">
-        <div class="bg-white p-10 rounded-[2rem] shadow-2xl text-center w-full max-w-sm transform scale-100 transition-transform duration-300 border-b-8 border-[#f4aa26]">
-            <div class="w-20 h-20 bg-[#fde68a] rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner">
-                <i data-lucide="lock" class="w-10 h-10 text-[#c3242a]"></i>
-            </div>
-            <h2 class="text-3xl font-black text-[#c3242a] mb-2 tracking-tight">Halt, stop!</h2>
-            <p class="text-sm font-semibold text-slate-500 mb-8 uppercase tracking-wider">Nur für Kärwaboum & -madla</p>
-            <input type="password" id="password-input" placeholder="Passwort eingeben" class="w-full p-4 mb-6 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:outline-none focus:border-[#f4aa26] focus:bg-white text-center font-bold text-lg transition-all shadow-sm">
-            <button onclick="checkPassword()" class="w-full bg-[#c3242a] text-white font-black py-4 rounded-2xl hover:bg-[#a01c22] transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 active:translate-y-0">
-                Eintreten
-            </button>
-        </div>
-    </div>
-
     <!-- Moderner Header mit Gradient und Pattern -->
     <header class="bg-gradient-to-br from-[#c3242a] to-[#9b191e] text-white pt-8 pb-12 shadow-lg relative overflow-hidden">
         <!-- Dekoratives Hintergrundmuster (Punkte) -->
@@ -134,7 +119,7 @@
                     <div class="p-2 bg-[#fde68a]/30 rounded-xl">
                         <i data-lucide="list-music" class="w-5 h-5 text-[#f4aa26]"></i>
                     </div>
-                    <h2 class="font-extrabold text-lg text-slate-800">Alle Gstanzln</h2>
+                    <h2 class="font-extrabold text-lg text-slate-800">Alle Lieder</h2>
                 </div>
                 <span class="text-xs font-bold bg-slate-100 text-slate-500 px-3 py-1 rounded-full" id="song-count">27</span>
             </div>
@@ -207,7 +192,7 @@
                         <i data-lucide="mic" class="w-10 h-10 mb-1 transition-transform group-hover:-translate-y-1"></i>
                         <span id="mic-status-text" class="font-black text-[11px] uppercase tracking-wider">Starten</span>
                     </button>
-                    <p id="recording-indicator" class="mt-6 text-sm font-bold text-[#c3242a] animate-bounce hidden relative z-10">Ich höre zu... Sing los!</p>
+                    <p id="recording-indicator" class="mt-6 text-sm font-bold text-[#c3242a] animate-bounce hidden relative z-10">Bitte jetzt singen...</p>
                 </div>
 
                 <!-- Modernes Ergebnis Banner -->
@@ -222,7 +207,7 @@
                             <div id="score-icon-box" class="p-3 bg-white/20 rounded-2xl backdrop-blur-sm"></div>
                             <div>
                                 <p class="text-sm font-semibold opacity-90 uppercase tracking-wider mb-1">Ergebnis</p>
-                                <p id="score-headline" class="font-black text-xl md:text-2xl tracking-tight">Bassd scho!</p>
+                                <p id="score-headline" class="font-black text-xl md:text-2xl tracking-tight">Ergebnis laden...</p>
                             </div>
                         </div>
                         <div id="score-percent" class="text-4xl md:text-5xl font-black tracking-tighter">0%</div>
@@ -237,7 +222,7 @@
                 <div class="p-3 bg-[#fde68a]/30 text-[#f4aa26] rounded-2xl">
                     <i data-lucide="book-open-check" class="w-8 h-8"></i>
                 </div>
-                <h2 class="text-3xl font-black text-slate-800 tracking-tight">Fränkisch Lexikon</h2>
+                <h2 class="text-3xl font-black text-slate-800 tracking-tight">Fränkisch-Lexikon</h2>
             </div>
             
             <div id="dictionary-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -249,31 +234,13 @@
 
     <!-- Footer -->
     <footer class="mt-12 py-8 text-center text-slate-400 text-sm font-medium">
-        <p>Gmacht für die Almoshiefer Kärwa</p>
+        <p>Erstellt für die Schloßkärwa Almoshof</p>
     </footer>
 
     <!-- APP LOGIC -->
     <script>
         // ==========================================
-        // 1. PASSWORT LOGIK
-        // ==========================================
-        const PASSWORD = "deinpasswort"; 
-
-        function checkPassword() {
-            const input = document.getElementById('password-input').value;
-            const overlay = document.getElementById('password-overlay');
-            if (input === PASSWORD) {
-                overlay.style.opacity = '0';
-                setTimeout(() => overlay.style.display = 'none', 500); // Weiches Ausblenden
-            } else {
-                const inputEl = document.getElementById('password-input');
-                inputEl.classList.add('border-red-500', 'animate-pulse');
-                setTimeout(() => inputEl.classList.remove('border-red-500', 'animate-pulse'), 1000);
-            }
-        }
-
-        // ==========================================
-        // 2. DATEN
+        // DATEN
         // ==========================================
         const kaerwaLieder = [
             { id: 1, title: "Almashiefer Schlössla", lyrics: "Und des Almashiefer Schlössla des is schäi beisam.\nHullareidium Hullareidium\nUnd die Almashiefer Böschla däi hald´n schäi zamm\nHullarei di rei di um" },
@@ -337,7 +304,7 @@
 
 
         // ==========================================
-        // 3. UI STATE & ANIMATIONEN LOGIK
+        // UI STATE & ANIMATIONEN LOGIK
         // ==========================================
         let activeSongId = 1;
         let practiceMode = false;
@@ -461,13 +428,13 @@
         }
 
         // ==========================================
-        // 4. SPRACHERKENNUNG & SCORE
+        // SPRACHERKENNUNG & SCORE
         // ==========================================
         let isRecording = false;
         let recognition = null;
         let fullTranscript = "";
 
-        // Fuzzy Matching Algorithm (unverändert)
+        // Fuzzy Matching Algorithm
         function getLevenshteinDistance(a, b) {
             const matrix = [];
             for (let i = 0; i <= b.length; i++) matrix[i] = [i];
@@ -593,15 +560,15 @@
                 
                 if (score > 70) {
                     banner.classList.add('bg-gradient-to-r', 'from-green-500', 'to-emerald-600');
-                    hl.textContent = "Bassd scho! (Klasse)";
+                    hl.textContent = "Sehr gut!";
                     box.innerHTML = '<i data-lucide="check-circle" class="w-8 h-8 text-white"></i>';
                 } else if (score > 35) {
                     banner.classList.add('bg-gradient-to-r', 'from-amber-400', 'to-orange-500');
-                    hl.textContent = "Ganz ordentlich (Üb noch)";
+                    hl.textContent = "Ordentlich";
                     box.innerHTML = '<i data-lucide="help-circle" class="w-8 h-8 text-white"></i>';
                 } else {
                     banner.classList.add('bg-gradient-to-r', 'from-slate-600', 'to-slate-700');
-                    hl.textContent = "Naa, des war nix!";
+                    hl.textContent = "Nochmal versuchen!";
                     box.innerHTML = '<i data-lucide="x-circle" class="w-8 h-8 text-white"></i>';
                 }
                 lucide.createIcons();
@@ -611,7 +578,7 @@
         document.getElementById('btn-mic').addEventListener('click', () => isRecording ? stopRecording() : startRecording());
 
         // ==========================================
-        // 5. INITIALISIERUNG
+        // INITIALISIERUNG
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
             // Moderne Liederliste
@@ -641,12 +608,7 @@
             // Verstecke die Tabs beim initialen Laden kurz, um die Fade-In Animation sauber zu starten
             document.getElementById('tab-lyrics').style.display = 'block';
             setTimeout(() => document.getElementById('tab-lyrics').classList.add('active'), 50);
-
-            document.getElementById('password-input').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') checkPassword();
-            });
         });
     </script>
 </body>
 </html>
-```eof
