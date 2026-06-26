@@ -12,132 +12,92 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
-    <!-- CSS für Apple Liquid Glass & Typography -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        /* Traditionelle, gut lesbare Schrift */
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap');
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: #f5f5f7;
-            background: linear-gradient(-45deg, #fde68a, #f4aa26, #c3242a, #f5f5f7);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            color: #1d1d1f;
+            font-family: 'Source Sans Pro', sans-serif;
+            background-color: #f9f8f3; /* Warmes, natürliches Beige/Off-White */
+            color: #2d3748;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .liquid-glass {
-            background: rgba(255, 255, 255, 0.45);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.8);
-        }
-
-        .liquid-glass-dark {
-            background: rgba(30, 30, 30, 0.65);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-            color: white;
-        }
-        
-        .liquid-nav {
-            background: rgba(255, 255, 255, 0.65);
-            backdrop-filter: blur(30px) saturate(200%);
-            -webkit-backdrop-filter: blur(30px) saturate(200%);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { 
-            background: rgba(0,0,0,0.2); 
-            border-radius: 10px; 
-        }
+        /* Schlichte, funktionale Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0aec0; }
 
         .blur-text { 
             filter: blur(8px); 
             user-select: none; 
-            opacity: 0.5;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #e2e8f0;
+            color: transparent;
+            transition: all 0.3s ease;
         }
 
+        /* Einfaches Einblenden ohne fliegende Elemente */
         .tab-content {
             display: none;
             opacity: 0;
-            transform: scale(0.98) translateY(10px);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.3s ease;
         }
         .tab-content.active {
             display: block;
             opacity: 1;
-            transform: scale(1) translateY(0);
         }
 
-        .apple-btn {
-            transition: all 0.2s ease;
-        }
-        .apple-btn:active {
-            transform: scale(0.96);
-        }
-
-        .dict-item {
-            transition: all 0.3s ease;
-        }
-        .dict-item:hover {
-            transform: translateY(-2px);
-            background: rgba(255, 255, 255, 0.8);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        /* Handfeste Karten-Optik */
+        .solid-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-bottom: 3px solid #e2e8f0;
+            border-radius: 12px;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative overflow-x-hidden selection:bg-[#c3242a] selection:text-white">
+<body class="min-h-screen flex flex-col relative">
 
-    <!-- Navigation -->
-    <nav class="liquid-nav sticky top-0 z-50 py-3 px-4 shadow-sm">
-        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+    <!-- Klassischer, solider Header -->
+    <header class="bg-[#c3242a] text-white py-4 shadow-md sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
             
+            <!-- Logo / Titel -->
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-[#c3242a] to-[#9b191e] flex items-center justify-center shadow-md">
-                    <i data-lucide="music" class="w-5 h-5 text-white"></i>
+                <div class="w-12 h-12 bg-white text-[#c3242a] rounded-lg flex items-center justify-center shadow-sm border-b-2 border-gray-300">
+                    <i data-lucide="music" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold tracking-tight text-gray-900 leading-tight">Almoshof Trainer</h1>
-                    <p class="text-xs font-medium text-gray-500 uppercase tracking-wider">Schloßkärwa</p>
+                    <h1 class="text-xl font-black tracking-wide leading-tight">Almoshof Trainer</h1>
+                    <p class="text-sm font-semibold text-red-200 uppercase tracking-wider">Schloßkärwa</p>
                 </div>
             </div>
 
-            <div class="flex bg-black/5 p-1 rounded-full border border-black/5">
-                <button onclick="switchTab('tab-lyrics')" id="btn-tab-lyrics" class="nav-btn active-nav px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300">
+            <!-- Schlichte Navigation -->
+            <nav class="flex bg-[#a31a20] p-1 rounded-lg">
+                <button onclick="switchTab('tab-lyrics')" id="btn-tab-lyrics" class="nav-btn bg-white text-[#c3242a] px-6 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors">
                     <i data-lucide="music-4" class="w-4 h-4"></i> <span class="hidden sm:inline">Lieder</span>
                 </button>
-                <button onclick="switchTab('tab-practice')" id="btn-tab-practice" class="nav-btn text-gray-600 hover:text-gray-900 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300">
+                <button onclick="switchTab('tab-practice')" id="btn-tab-practice" class="nav-btn text-white hover:bg-[#8b141a] px-6 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors">
                     <i data-lucide="mic-2" class="w-4 h-4"></i> <span class="hidden sm:inline">Singen</span>
                 </button>
-                <button onclick="switchTab('tab-dictionary')" id="btn-tab-dictionary" class="nav-btn text-gray-600 hover:text-gray-900 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300">
+                <button onclick="switchTab('tab-dictionary')" id="btn-tab-dictionary" class="nav-btn text-white hover:bg-[#8b141a] px-6 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors">
                     <i data-lucide="book-a" class="w-4 h-4"></i> <span class="hidden sm:inline">Lexikon</span>
                 </button>
-            </div>
+            </nav>
         </div>
-    </nav>
+    </header>
 
     <!-- Main Content Grid -->
-    <main id="main-container" class="max-w-6xl w-full mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow z-10">
+    <main id="main-container" class="max-w-6xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow">
         
-        <!-- Sidebar -->
-        <div id="sidebar-songs" class="lg:col-span-4 liquid-glass rounded-3xl overflow-hidden flex flex-col h-[60vh] lg:h-[75vh]">
-            <div class="p-5 border-b border-white/40 flex items-center justify-between bg-white/20">
-                <h2 class="font-semibold text-lg text-gray-800 tracking-tight">Alle Lieder</h2>
-                <span class="text-xs font-bold bg-white/50 text-gray-600 px-3 py-1 rounded-full shadow-sm" id="song-count">27</span>
+        <!-- Sidebar: Liederliste -->
+        <div id="sidebar-songs" class="lg:col-span-4 solid-card overflow-hidden flex flex-col h-[60vh] lg:h-[75vh]">
+            <div class="p-4 border-b border-gray-200 bg-gray-50 flex items-center justify-between">
+                <h2 class="font-bold text-lg text-gray-800">Liederliste</h2>
+                <span class="text-xs font-bold bg-[#f4aa26] text-white px-2 py-1 rounded" id="song-count">27</span>
             </div>
-            <div id="song-list" class="overflow-y-auto p-2 flex-grow custom-scrollbar space-y-1">
+            <div id="song-list" class="overflow-y-auto p-2 flex-grow">
                 <!-- Generiert per JS -->
             </div>
         </div>
@@ -146,80 +106,80 @@
         <div id="content-area" class="lg:col-span-8 flex flex-col gap-6 relative">
             
             <!-- TAB 1: Lieder lesen -->
-            <div id="tab-lyrics" class="tab-content active liquid-glass rounded-3xl p-6 md:p-10">
+            <div id="tab-lyrics" class="tab-content active solid-card p-6 md:p-8">
                 
-                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 pb-6 border-b border-white/40">
-                    <h2 id="active-song-title" class="text-3xl font-bold text-gray-900 tracking-tight transition-all">Lade Lied...</h2>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 pb-4 border-b border-gray-200">
+                    <h2 id="active-song-title" class="text-2xl font-black text-gray-800">Lade Lied...</h2>
                     
-                    <button id="btn-learn-mode" class="apple-btn flex items-center gap-2 px-5 py-2.5 bg-white/50 hover:bg-white/80 text-gray-700 rounded-full text-sm font-medium transition-all shadow-sm border border-white/50">
+                    <button id="btn-learn-mode" class="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md text-sm font-bold border border-gray-300 transition-colors">
                         <i data-lucide="eye-off" class="w-4 h-4" id="learn-icon"></i>
-                        <span id="learn-text">Lern-Modus</span>
+                        <span id="learn-text">Lern-Modus aus</span>
                     </button>
                 </div>
 
-                <div class="relative">
-                    <div id="active-song-lyrics" class="text-xl leading-relaxed whitespace-pre-wrap p-4 text-gray-800 font-medium transition-all duration-500"></div>
-                </div>
+                <div id="active-song-lyrics" class="text-lg md:text-xl leading-relaxed whitespace-pre-wrap p-6 bg-[#fffcf5] border border-[#fde68a] rounded-lg text-gray-800 font-medium"></div>
 
-                <div id="audio-container" class="mt-8 p-4 bg-white/40 rounded-2xl border border-white/50 hidden transition-all duration-300 shadow-sm">
-                    <div class="flex items-center gap-2 mb-3 px-2">
-                        <i data-lucide="headphones" class="w-4 h-4 text-[#c3242a]"></i>
-                        <p class="text-sm font-semibold text-gray-700 tracking-tight">Original-Aufnahme</p>
+                <div id="audio-container" class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200 hidden">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="volume-2" class="w-5 h-5 text-[#c3242a]"></i>
+                        <p class="text-sm font-bold text-gray-700">Original-Aufnahme anhören</p>
                     </div>
-                    <audio id="audio-player" controls class="w-full h-10 outline-none rounded-lg opacity-80 hover:opacity-100 transition-opacity"></audio>
+                    <audio id="audio-player" controls class="w-full h-10 outline-none"></audio>
                 </div>
             </div>
 
             <!-- TAB 2: Singen & Prüfen -->
-            <div id="tab-practice" class="tab-content liquid-glass rounded-3xl p-6 md:p-10">
+            <div id="tab-practice" class="tab-content solid-card p-6 md:p-8">
                 
-                <div class="flex items-center gap-3 mb-8 pb-6 border-b border-white/40">
-                    <i data-lucide="mic" class="w-6 h-6 text-[#c3242a]"></i>
-                    <h3 class="text-2xl font-bold text-gray-900 tracking-tight">Singen üben</h3>
+                <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+                    <div class="bg-[#c3242a] p-2 rounded text-white">
+                        <i data-lucide="mic" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-800">Singen üben</h3>
                 </div>
 
-                <div class="mb-8 p-6 rounded-2xl bg-white/30 border border-white/50 shadow-inner">
-                    <p class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Aktueller Liedtext</p>
-                    <div id="practice-lyrics" class="text-lg leading-relaxed whitespace-pre-wrap text-gray-700 font-medium transition-all duration-500"></div>
+                <div class="mb-6">
+                    <p class="text-xs font-bold uppercase text-gray-500 mb-2">Aktueller Text:</p>
+                    <div id="practice-lyrics" class="text-base leading-relaxed whitespace-pre-wrap p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 font-medium"></div>
                 </div>
 
-                <div class="flex flex-col items-center justify-center py-12 px-6 rounded-3xl bg-white/20 border border-white/40 relative overflow-hidden transition-all duration-300" id="mic-zone">
-                    
-                    <div id="mic-pulse-1" class="absolute w-32 h-32 bg-[#c3242a]/20 rounded-full opacity-0 transition-opacity duration-300"></div>
-                    <div id="mic-pulse-2" class="absolute w-48 h-48 bg-[#c3242a]/10 rounded-full opacity-0 transition-opacity duration-300"></div>
-
-                    <button id="btn-mic" class="apple-btn relative z-10 flex flex-col items-center justify-center w-24 h-24 rounded-full transition-all duration-300 shadow-lg bg-white text-[#c3242a] group">
-                        <i data-lucide="mic" class="w-8 h-8 mb-1 transition-transform group-hover:scale-110"></i>
-                        <span id="mic-status-text" class="font-bold text-[10px] uppercase tracking-widest">Starten</span>
+                <!-- Aufnahme Bereich -->
+                <div class="flex flex-col items-center justify-center py-10 px-6 bg-[#f9f8f3] border-2 border-dashed border-gray-300 rounded-xl" id="mic-zone">
+                    <button id="btn-mic" class="flex flex-col items-center justify-center w-24 h-24 rounded-full bg-white border-4 border-[#c3242a] text-[#c3242a] hover:bg-gray-50 shadow-md transition-colors">
+                        <i data-lucide="mic" class="w-8 h-8 mb-1"></i>
+                        <span id="mic-status-text" class="font-bold text-[11px] uppercase">Aufnehmen</span>
                     </button>
-                    <p id="recording-indicator" class="mt-6 text-sm font-medium text-[#c3242a] animate-pulse hidden relative z-10">Zuhören...</p>
+                    <p id="recording-indicator" class="mt-4 text-sm font-bold text-[#c3242a] animate-pulse hidden">Erkennung läuft... Sing jetzt!</p>
                 </div>
 
-                <div id="results-section" class="mt-6 hidden transform transition-all duration-500 translate-y-4 opacity-0">
-                    <div class="p-4 bg-white/40 rounded-2xl text-gray-700 italic mb-4 text-sm border border-white/50 shadow-sm max-h-48 overflow-y-auto">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-gray-500 block mb-1">Verstanden</span>
-                        "<span id="recognized-text">...</span>"
+                <!-- Ergebnis Bereich -->
+                <div id="results-section" class="mt-6 hidden">
+                    <div class="p-4 bg-gray-100 rounded-lg border border-gray-200 mb-4 max-h-40 overflow-y-auto">
+                        <span class="text-[11px] font-bold uppercase text-gray-500 block mb-1">Das hat der Browser verstanden:</span>
+                        <span id="recognized-text" class="italic text-gray-700 text-sm">...</span>
                     </div>
 
-                    <div id="score-banner" class="p-6 rounded-2xl flex items-center justify-between text-white shadow-xl transition-all duration-500">
+                    <div id="score-banner" class="p-5 rounded-xl flex items-center justify-between text-white shadow-sm border-b-4">
                         <div class="flex items-center gap-4">
-                            <div id="score-icon-box" class="p-2 bg-white/20 rounded-xl backdrop-blur-md"></div>
+                            <div id="score-icon-box" class="p-2 bg-white/20 rounded-lg"></div>
                             <div>
-                                <p class="text-xs font-semibold opacity-80 uppercase tracking-widest mb-1">Ergebnis</p>
-                                <p id="score-headline" class="font-bold text-xl tracking-tight">Lädt...</p>
+                                <p class="text-xs font-bold uppercase opacity-90 mb-1">Auswertung</p>
+                                <p id="score-headline" class="font-black text-xl">Lädt...</p>
                             </div>
                         </div>
-                        <div id="score-percent" class="text-4xl font-bold tracking-tighter">0%</div>
+                        <div id="score-percent" class="text-4xl font-black">0%</div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- TAB 3: Wörterbuch Grid -->
-        <div id="tab-dictionary" class="tab-content lg:col-span-12 liquid-glass rounded-3xl p-6 md:p-10">
-            <div class="flex items-center justify-center gap-3 mb-10 pb-6 border-b border-white/40">
-                <i data-lucide="book-open" class="w-6 h-6 text-[#c3242a]"></i>
-                <h2 class="text-3xl font-bold text-gray-900 tracking-tight">Fränkisch-Lexikon</h2>
+        <!-- TAB 3: Wörterbuch -->
+        <div id="tab-dictionary" class="tab-content lg:col-span-12 solid-card p-6 md:p-8">
+            <div class="flex items-center gap-3 mb-6 pb-4 border-b border-gray-200">
+                <div class="bg-[#f4aa26] p-2 rounded text-white">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                </div>
+                <h2 class="text-xl font-black text-gray-800">Fränkisch-Lexikon</h2>
             </div>
             
             <div id="dictionary-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -229,8 +189,8 @@
 
     </main>
 
-    <footer class="mt-auto py-8 text-center text-gray-500 text-xs font-medium z-10">
-        <p>Schloßkärwa Almoshof</p>
+    <footer class="py-6 text-center text-gray-500 text-sm font-semibold border-t border-gray-200 mt-auto bg-white">
+        <p>Gmacht für die Schloßkärwa Almoshof</p>
     </footer>
 
     <!-- APP LOGIC -->
@@ -270,12 +230,13 @@
 
         const dictWords = [
             { franken: "Aff", hoch: "Auf" }, { franken: "Almashiefer", hoch: "Einwohner von Almoshof" },
-            { franken: "Baicher / Peicha", hoch: "Einwohner von Buch" }, { franken: "Bassd scho", hoch: "Höchstes Lob" },
-            { franken: "Bäschla / Boum", hoch: "Burschen / Jungs" }, { franken: "Beidl", hoch: "Geldbeutel" },
+            { franken: "Baicher", hoch: "Einwohner von Buch" }, { franken: "Peicha", hoch: "Einwohner von Buch" }, 
+            { franken: "Bassd scho", hoch: "Höchstes Lob" }, { franken: "Bäschla", hoch: "Burschen / Jungs" }, 
+            { franken: "Boum", hoch: "Burschen / Jungs" }, { franken: "Beidl", hoch: "Geldbeutel" },
             { franken: "Beisam", hoch: "Beisammen" }, { franken: "Bläid", hoch: "Blöd / Dumm" },
             { franken: "Brunst", hoch: "Pinkelt" }, { franken: "Bumbl", hoch: "Große Aufregung / Glocke" },
             { franken: "Bürscht", hoch: "Geschlechtsverkehr" }, { franken: "Däft", hoch: "Dürfte / Darf" },
-            { franken: "Dou / Dout", hoch: "Da / Tut" }, { franken: "Drom", hoch: "Dort droben" },
+            { franken: "Dou", hoch: "Da / Tut" }, { franken: "Dout", hoch: "Da / Tut" }, { franken: "Drom", hoch: "Dort droben" },
             { franken: "Etza", hoch: "Jetzt" }, { franken: "Gehm", hoch: "Geben" },
             { franken: "Gerumbl", hoch: "Lärm / Chaos" }, { franken: "Gflocht", hoch: "Geflucht" },
             { franken: "Gla", hoch: "Klein" }, { franken: "Gorka", hoch: "Gar kein" },
@@ -289,8 +250,8 @@
             { franken: "Mo", hoch: "Mann" }, { franken: "Mou", hoch: "Muss" },
             { franken: "Muggn", hoch: "Mücken" }, { franken: "Muggerbaa", hoch: "Mückenbein" },
             { franken: "Nieber", hoch: "Hinüber" }, { franken: "Nou wos", hoch: "Na was" },
-            { franken: "Orsch / Oarsch", hoch: "Hintern" }, { franken: "Ouh", hoch: "An / Anklopfen" },
-            { franken: "Rei / Ro", hoch: "Herein / Herunter" }, { franken: "Safti", hoch: "Saftig" },
+            { franken: "Orsch", hoch: "Hintern" }, { franken: "Oarsch", hoch: "Hintern" }, { franken: "Ouh", hoch: "An / Anklopfen" },
+            { franken: "Rei", hoch: "Herein" }, { franken: "Ro", hoch: "Herunter" }, { franken: "Safti", hoch: "Saftig" },
             { franken: "Schäi", hoch: "Schön" }, { franken: "Schauma", hoch: "Schauen wir" },
             { franken: "Schätza", hoch: "Schürzen" }, { franken: "Schozerla", hoch: "Schätzchen" },
             { franken: "Sulang", hoch: "Solange" }, { franken: "Stieferla", hoch: "Stiefelchen" },
@@ -300,40 +261,39 @@
 
 
         // ==========================================
-        // UI STATE LOGIC
+        // UI TAB LOGIC
         // ==========================================
         let activeSongId = 1;
         let practiceMode = false;
 
         window.switchTab = function(tabId) {
+            // Alte Tabs verbergen
             document.querySelectorAll('.tab-content').forEach(el => {
                 if (el.id !== tabId) {
                     el.classList.remove('active');
-                    setTimeout(() => {
-                        if (!el.classList.contains('active')) {
-                            el.style.display = 'none';
-                        }
-                    }, 400); 
+                    setTimeout(() => { if (!el.classList.contains('active')) el.style.display = 'none'; }, 300); 
                 }
             });
 
+            // Button Styles zurücksetzen
             document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.className = "nav-btn text-gray-600 hover:text-gray-900 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300";
+                btn.className = "nav-btn text-white hover:bg-[#8b141a] px-6 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors";
             });
             
+            // Aktiven Button hervorheben
             const activeBtn = document.getElementById('btn-' + tabId);
             if (activeBtn) {
-                activeBtn.className = "nav-btn active-nav bg-white shadow-sm border border-gray-200 text-gray-900 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300";
+                activeBtn.className = "nav-btn bg-white text-[#c3242a] px-6 py-2 rounded-md font-bold text-sm flex items-center gap-2 transition-colors";
             }
 
+            // Neuen Tab zeigen
             const newTab = document.getElementById(tabId);
             if (newTab) {
                 newTab.style.display = 'block';
-                setTimeout(() => {
-                    newTab.classList.add('active');
-                }, 10);
+                setTimeout(() => newTab.classList.add('active'), 10);
             }
             
+            // Layout anpassen
             const sidebar = document.getElementById('sidebar-songs');
             if (tabId === 'tab-dictionary') {
                 sidebar.style.display = 'none';
@@ -344,8 +304,8 @@
 
         window.selectSong = function(id) {
             document.querySelectorAll('.song-list-btn').forEach(btn => {
-                btn.classList.remove('bg-white/60', 'shadow-sm', 'font-semibold', 'text-gray-900');
-                btn.classList.add('text-gray-600');
+                btn.classList.remove('bg-[#c3242a]', 'text-white');
+                btn.classList.add('text-gray-700', 'hover:bg-gray-100');
             });
 
             activeSongId = id;
@@ -353,23 +313,13 @@
             
             const activeBtn = document.getElementById(`song-btn-${id}`);
             if (activeBtn) {
-                activeBtn.classList.remove('text-gray-600');
-                activeBtn.classList.add('bg-white/60', 'shadow-sm', 'font-semibold', 'text-gray-900');
+                activeBtn.classList.remove('text-gray-700', 'hover:bg-gray-100');
+                activeBtn.classList.add('bg-[#c3242a]', 'text-white');
             }
 
-            const titleEl = document.getElementById('active-song-title');
-            const lyricsEl1 = document.getElementById('active-song-lyrics');
-            const lyricsEl2 = document.getElementById('practice-lyrics');
-            
-            [titleEl, lyricsEl1, lyricsEl2].forEach(el => el.style.opacity = '0');
-            
-            setTimeout(() => {
-                titleEl.textContent = `${song.id}. ${song.title}`;
-                lyricsEl1.textContent = song.lyrics;
-                lyricsEl2.textContent = song.lyrics;
-                [titleEl, lyricsEl1, lyricsEl2].forEach(el => el.style.opacity = '1');
-                applyLearnModeStyles();
-            }, 200);
+            document.getElementById('active-song-title').textContent = `${song.id}. ${song.title}`;
+            document.getElementById('active-song-lyrics').textContent = song.lyrics;
+            document.getElementById('practice-lyrics').textContent = song.lyrics;
 
             const audioContainer = document.getElementById('audio-container');
             const audioPlayer = document.getElementById('audio-player');
@@ -381,11 +331,7 @@
                 audioPlayer.src = "";
             }
 
-            const results = document.getElementById('results-section');
-            results.classList.remove('translate-y-0', 'opacity-100');
-            results.classList.add('translate-y-4', 'opacity-0');
-            setTimeout(() => results.classList.add('hidden'), 500);
-            
+            document.getElementById('results-section').classList.add('hidden');
             if (isRecording) stopRecording();
         }
 
@@ -406,21 +352,18 @@
                 lyrics2.classList.add('blur-text');
                 text.textContent = "Text anzeigen";
                 icon.setAttribute('data-lucide', 'eye');
-                btnLearnMode.classList.add('bg-gray-800', 'text-white', 'border-gray-800');
-                btnLearnMode.classList.remove('bg-white/50', 'text-gray-700', 'border-white/50');
             } else {
                 lyrics1.classList.remove('blur-text');
                 lyrics2.classList.remove('blur-text');
-                text.textContent = "Lern-Modus";
+                text.textContent = "Lern-Modus aus";
                 icon.setAttribute('data-lucide', 'eye-off');
-                btnLearnMode.classList.remove('bg-gray-800', 'text-white', 'border-gray-800');
-                btnLearnMode.classList.add('bg-white/50', 'text-gray-700', 'border-white/50');
             }
             lucide.createIcons();
         }
 
+
         // ==========================================
-        // SPRACHERKENNUNG & SCORE - ANDROID STUTTER FIX
+        // NEUER, BESSERER SPRACHERKENNUNGS-ALGORITHMUS
         // ==========================================
         let isRecording = false;
         let recognition = null;
@@ -438,89 +381,120 @@
             return matrix[b.length][a.length];
         }
 
-        function calculateMatchScore(original, spoken) {
+        // Der neue Algorithmus straft extra-Wörter nicht mehr ab. 
+        // Er sucht nur: "Wieviele Wörter aus dem Original finde ich (auch leicht falsch geschrieben) im Gesprochenen?"
+        function calculateRobustScore(original, spoken) {
             if (!spoken) return 0;
-            const cleanOrig = original.toLowerCase().replace(/[^a-zäöüß0-9]/g, '');
-            const cleanSpok = spoken.toLowerCase().replace(/[^a-zäöüß0-9]/g, '');
-            if (cleanOrig.length === 0) return 0;
+            
+            // Alles normalisieren (Sonderzeichen weg, kleinschreiben)
+            const normalize = str => str.toLowerCase().replace(/[^a-zäöüß0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+            const origWords = normalize(original).split(' ');
+            const spokWords = normalize(spoken).split(' ');
 
-            const dist = getLevenshteinDistance(cleanOrig, cleanSpok);
-            const maxLen = Math.max(cleanOrig.length, cleanSpok.length);
-            let score = ((maxLen - dist) / maxLen) * 100;
+            if (origWords.length === 0) return 0;
 
-            const origWords = original.toLowerCase().replace(/[^a-zäöüß0-9 ]/g, '').split(' ');
-            const spokWords = spoken.toLowerCase().replace(/[^a-zäöüß0-9 ]/g, '').split(' ');
-            let matches = 0, sigWords = 0;
-            origWords.forEach(w => { if (w.length > 2) { sigWords++; if (spokWords.includes(w)) matches++; }});
-            if (sigWords > 0) score = Math.max(score, (matches / sigWords) * 100);
+            let matchesFound = 0;
+
+            origWords.forEach(oWord => {
+                if (oWord.length <= 2) {
+                    if (spokWords.includes(oWord)) matchesFound++;
+                    return;
+                }
+
+                // Suche das ähnlichste Wort im gesprochenen Text
+                let highestSimilarity = 0;
+                spokWords.forEach(sWord => {
+                    const dist = getLevenshteinDistance(oWord, sWord);
+                    const maxLen = Math.max(oWord.length, sWord.length);
+                    const similarity = (maxLen - dist) / maxLen;
+                    if (similarity > highestSimilarity) {
+                        highestSimilarity = similarity;
+                    }
+                });
+
+                // Ab 60% Ähnlichkeit lassen wir es als Treffer gelten (Toleranz für Fränkisch -> Hochdeutsch)
+                // Beispiel: "Madla" und "Mädel" = 60% Ähnlich.
+                if (highestSimilarity >= 0.60) {
+                    matchesFound++;
+                }
+            });
+
+            // Der Score ist jetzt einfach der Anteil der gefundenen Wörter. 
+            // So zerstört ein "Android-Stotter-Bug" nicht mehr das Ergebnis!
+            let score = (matchesFound / origWords.length) * 100;
             return Math.min(Math.max(Math.round(score), 0), 100);
         }
 
         function initSpeech() {
             const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const SGL = window.SpeechGrammarList || window.webkitSpeechGrammarList;
             if (!SR) return false;
+            
             recognition = new SR();
             recognition.continuous = true;
-            // FIX FÜR ANDROID CHROME:
-            // Wenn man interimResults auf true lässt, schickt Android den kompletten Satz 
-            // immer wieder als "Zwischenergebnis" und hängt ihn aneinander. 
-            // Durch 'false' warten wir einfach, bis die Liedzeile komplett gesungen wurde!
-            recognition.interimResults = false; 
+            recognition.interimResults = false; // Verhindert den Stotter-Bug
             recognition.lang = 'de-DE';
+
+            // Wörterbuch in die Erkennung einspeisen (hilft dem Browser bei Dialektwörtern)
+            if (SGL) {
+                const speechRecognitionList = new SGL();
+                const grammarWords = dictWords.map(d => d.franken).join(' | ');
+                const grammar = '#JSGF V1.0; grammar kaerwa; public <word> = ' + grammarWords + ' ;';
+                speechRecognitionList.addFromString(grammar, 1);
+                recognition.grammars = speechRecognitionList;
+            }
 
             recognition.onresult = (e) => {
                 let transcript = "";
-                // Da interimResults aus ist, bauen wir den Text nur aus den finalen, sicheren Blöcken
                 for (let i = 0; i < e.results.length; i++) {
                     transcript += e.results[i][0].transcript + " ";
                 }
                 document.getElementById('recognized-text').textContent = transcript.trim() || "...";
             };
             
-            recognition.onerror = () => stopRecording();
+            recognition.onerror = (e) => {
+                console.error("Speech Error: ", e);
+                stopRecording();
+            }
             recognition.onend = () => { if (isRecording) stopRecording(); };
             return true;
         }
 
         function toggleMicUI(active) {
             const btn = document.getElementById('btn-mic');
-            const pulse1 = document.getElementById('mic-pulse-1');
-            const pulse2 = document.getElementById('mic-pulse-2');
             const indicator = document.getElementById('recording-indicator');
+            const zone = document.getElementById('mic-zone');
             
             if (active) {
                 btn.classList.replace('bg-white', 'bg-[#c3242a]');
                 btn.classList.replace('text-[#c3242a]', 'text-white');
-                pulse1.classList.replace('opacity-0', 'opacity-100');
-                pulse2.classList.replace('opacity-0', 'opacity-100');
-                pulse1.classList.add('animate-ping');
+                zone.classList.replace('border-gray-300', 'border-[#c3242a]');
                 document.getElementById('mic-status-text').textContent = "Stop";
                 indicator.classList.remove('hidden');
             } else {
                 btn.classList.replace('bg-[#c3242a]', 'bg-white');
                 btn.classList.replace('text-white', 'text-[#c3242a]');
-                pulse1.classList.replace('opacity-100', 'opacity-0');
-                pulse2.classList.replace('opacity-100', 'opacity-0');
-                pulse1.classList.remove('animate-ping');
-                document.getElementById('mic-status-text').textContent = "Starten";
+                zone.classList.replace('border-[#c3242a]', 'border-gray-300');
+                document.getElementById('mic-status-text').textContent = "Aufnehmen";
                 indicator.classList.add('hidden');
             }
         }
 
         function startRecording() {
-            if (!recognition && !initSpeech()) return alert("Spracherkennung wird in diesem Browser nicht unterstützt.");
+            if (!recognition && !initSpeech()) {
+                alert("Spracherkennung wird in deinem Browser nicht unterstützt. (Nutze Chrome/Safari)");
+                return;
+            }
             document.getElementById('recognized-text').textContent = "...";
-            
-            const results = document.getElementById('results-section');
-            results.classList.remove('translate-y-0', 'opacity-100');
-            results.classList.add('translate-y-4', 'opacity-0');
-            setTimeout(() => results.classList.add('hidden'), 300);
+            document.getElementById('results-section').classList.add('hidden');
             
             try {
                 recognition.start();
                 isRecording = true;
                 toggleMicUI(true);
-            } catch (err) {}
+            } catch (err) {
+                console.error(err);
+            }
         }
 
         function stopRecording() {
@@ -531,32 +505,30 @@
 
             setTimeout(() => {
                 const spoken = document.getElementById('recognized-text').textContent;
-                const score = calculateMatchScore(kaerwaLieder.find(s => s.id === activeSongId).lyrics, spoken);
+                // Nutze den neuen, toleranten Algorithmus!
+                const score = calculateRobustScore(kaerwaLieder.find(s => s.id === activeSongId).lyrics, spoken);
                 
                 document.getElementById('score-percent').textContent = score + "%";
-                const results = document.getElementById('results-section');
-                results.classList.remove('hidden');
-                
-                setTimeout(() => {
-                    results.classList.remove('translate-y-4', 'opacity-0');
-                    results.classList.add('translate-y-0', 'opacity-100');
-                }, 50);
+                document.getElementById('results-section').classList.remove('hidden');
 
                 const banner = document.getElementById('score-banner');
                 const hl = document.getElementById('score-headline');
                 const box = document.getElementById('score-icon-box');
 
-                banner.className = "p-5 rounded-2xl flex items-center justify-between text-white shadow-md transition-all duration-500 liquid-glass-dark ";
+                banner.className = "p-5 rounded-xl flex items-center justify-between text-white shadow-sm border-b-4 ";
                 
-                if (score > 70) {
-                    hl.textContent = "Sehr gut!";
-                    box.innerHTML = '<i data-lucide="check-circle" class="w-6 h-6 text-green-400"></i>';
-                } else if (score > 35) {
-                    hl.textContent = "Ordentlich";
-                    box.innerHTML = '<i data-lucide="help-circle" class="w-6 h-6 text-yellow-400"></i>';
+                if (score >= 70) {
+                    banner.classList.add('bg-green-600', 'border-green-800');
+                    hl.textContent = "Bassd scho! (Klasse)";
+                    box.innerHTML = '<i data-lucide="check-circle" class="w-8 h-8 text-white"></i>';
+                } else if (score >= 40) {
+                    banner.classList.add('bg-[#f4aa26]', 'border-[#d98b11]');
+                    hl.textContent = "Ganz ordentlich (Üb noch a weng)";
+                    box.innerHTML = '<i data-lucide="help-circle" class="w-8 h-8 text-white"></i>';
                 } else {
-                    hl.textContent = "Nochmal versuchen";
-                    box.innerHTML = '<i data-lucide="x-circle" class="w-6 h-6 text-red-400"></i>';
+                    banner.classList.add('bg-[#c3242a]', 'border-[#9b191e]');
+                    hl.textContent = "Naa, des war nix!";
+                    box.innerHTML = '<i data-lucide="x-circle" class="w-8 h-8 text-white"></i>';
                 }
                 lucide.createIcons();
             }, 600);
@@ -568,25 +540,31 @@
         // INITIALISIERUNG
         // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
+            // Liederliste füllen
             document.getElementById('song-list').innerHTML = kaerwaLieder.map(song => `
-                <button onclick="selectSong(${song.id})" id="song-btn-${song.id}" class="song-list-btn w-full text-left p-3.5 rounded-2xl transition-all duration-200 flex items-center justify-between text-gray-600 hover:bg-white/40 text-sm">
+                <button onclick="selectSong(${song.id})" id="song-btn-${song.id}" class="song-list-btn w-full text-left p-3 mb-1 rounded-md transition-colors flex items-center justify-between text-gray-700 hover:bg-gray-100 font-semibold text-sm">
                     <span class="truncate pr-2">${song.id}. ${song.title}</span>
-                    ${song.audioUrl ? '<i data-lucide="play-circle" class="w-4 h-4 text-gray-400"></i>' : ''}
+                    ${song.audioUrl ? '<i data-lucide="play-circle" class="w-4 h-4 opacity-50"></i>' : ''}
                 </button>
             `).join('');
 
+            // Lexikon füllen
             document.getElementById('dictionary-grid').innerHTML = dictWords.map(word => `
-                <div class="dict-item bg-white/40 p-5 rounded-2xl border border-white/50 flex flex-col justify-center min-h-[100px]">
-                    <div class="font-bold text-lg text-gray-900 mb-1 leading-tight">${word.franken}</div>
-                    <div class="text-gray-600 font-medium text-sm leading-snug">${word.hoch}</div>
+                <div class="bg-white p-4 rounded-lg border border-gray-200 shadow-sm flex flex-col justify-center min-h-[90px]">
+                    <div class="font-black text-lg text-[#c3242a] mb-1 leading-tight">${word.franken}</div>
+                    <div class="text-gray-600 font-semibold text-sm leading-snug flex items-center gap-1">
+                        <i data-lucide="arrow-right" class="w-3 h-3 text-gray-400"></i> ${word.hoch}
+                    </div>
                 </div>
             `).join('');
 
             lucide.createIcons();
             
+            // Tab 1 starten
             document.getElementById('tab-lyrics').style.display = 'block';
             setTimeout(() => document.getElementById('tab-lyrics').classList.add('active'), 50);
             
+            // Lied 1 auswählen
             selectSong(1);
         });
     </script>
