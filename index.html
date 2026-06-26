@@ -12,6 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
+    <!-- CSS für Apple Liquid Glass & Typography -->
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
@@ -72,7 +73,7 @@
             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Weiche Einblend-Animationen */
+        /* Weiche Einblend-Animationen korrigiert */
         .tab-content {
             display: none;
             opacity: 0;
@@ -316,37 +317,54 @@
 
 
         // ==========================================
-        // UI STATE LOGIC
+        // UI STATE LOGIC - BUG FIXED
         // ==========================================
         let activeSongId = 1;
         let practiceMode = false;
 
         window.switchTab = function(tabId) {
+            // Erst alle anderen Tabs verbergen (nicht den, den wir gleich anzeigen wollen!)
             document.querySelectorAll('.tab-content').forEach(el => {
-                el.classList.remove('active');
-                setTimeout(() => el.style.display = 'none', 400); 
+                if (el.id !== tabId) {
+                    el.classList.remove('active');
+                    // Warten, bis die Animation vorbei ist, dann aus dem Layout nehmen
+                    setTimeout(() => {
+                        // Noch ein Check, falls man ganz schnell hin und her geklickt hat
+                        if (!el.classList.contains('active')) {
+                            el.style.display = 'none';
+                        }
+                    }, 400); 
+                }
             });
 
+            // Button Styles zurücksetzen
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.className = "nav-btn text-gray-600 hover:text-gray-900 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300";
             });
             
+            // Aktiven Button hervorheben
             const activeBtn = document.getElementById('btn-' + tabId);
-            activeBtn.className = "nav-btn active-nav bg-white shadow-sm border border-gray-200 text-gray-900 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300";
+            if (activeBtn) {
+                activeBtn.className = "nav-btn active-nav bg-white shadow-sm border border-gray-200 text-gray-900 px-5 py-2 rounded-full font-medium text-sm flex items-center gap-2 transition-all duration-300";
+            }
 
-            setTimeout(() => {
-                const newTab = document.getElementById(tabId);
+            // Neuen Tab einblenden
+            const newTab = document.getElementById(tabId);
+            if (newTab) {
                 newTab.style.display = 'block';
-                void newTab.offsetWidth; 
-                newTab.classList.add('active');
-                
-                const sidebar = document.getElementById('sidebar-songs');
-                if (tabId === 'tab-dictionary') {
-                    sidebar.style.display = 'none';
-                } else {
-                    sidebar.style.display = 'flex';
-                }
-            }, 300);
+                // Mini-Verzögerung, damit der Browser die "display: block" Änderung erkennt, bevor die Klasse hinzugefügt wird
+                setTimeout(() => {
+                    newTab.classList.add('active');
+                }, 10);
+            }
+            
+            // Sidebar Layout (Liederliste im Wörterbuch ausblenden)
+            const sidebar = document.getElementById('sidebar-songs');
+            if (tabId === 'tab-dictionary') {
+                sidebar.style.display = 'none';
+            } else {
+                sidebar.style.display = 'flex';
+            }
         }
 
         window.selectSong = function(id) {
@@ -588,10 +606,11 @@
 
             lucide.createIcons();
             
+            // Setze den ersten Tab als aktiven Start-Tab
             document.getElementById('tab-lyrics').style.display = 'block';
             setTimeout(() => document.getElementById('tab-lyrics').classList.add('active'), 50);
             
-            // Set initial active song styling
+            // Lade Lied 1
             selectSong(1);
         });
     </script>
