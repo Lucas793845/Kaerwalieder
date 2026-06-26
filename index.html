@@ -420,7 +420,7 @@
         }
 
         // ==========================================
-        // SPRACHERKENNUNG & SCORE - BUG FIXED FÜR ANDROID
+        // SPRACHERKENNUNG & SCORE - ANDROID STUTTER FIX
         // ==========================================
         let isRecording = false;
         let recognition = null;
@@ -461,16 +461,18 @@
             if (!SR) return false;
             recognition = new SR();
             recognition.continuous = true;
-            recognition.interimResults = true;
+            // FIX FÜR ANDROID CHROME:
+            // Wenn man interimResults auf true lässt, schickt Android den kompletten Satz 
+            // immer wieder als "Zwischenergebnis" und hängt ihn aneinander. 
+            // Durch 'false' warten wir einfach, bis die Liedzeile komplett gesungen wurde!
+            recognition.interimResults = false; 
             recognition.lang = 'de-DE';
 
             recognition.onresult = (e) => {
-                // FIX: Um den "Android-Stotter-Bug" zu umgehen, bauen wir bei jedem neuen 
-                // Ergebnis-Event den kompletten Text frisch aus dem "e.results" Array zusammen, 
-                // anstatt Variablen aneinanderzuhängen. So verhindern wir Duplikate.
                 let transcript = "";
+                // Da interimResults aus ist, bauen wir den Text nur aus den finalen, sicheren Blöcken
                 for (let i = 0; i < e.results.length; i++) {
-                    transcript += e.results[i][0].transcript;
+                    transcript += e.results[i][0].transcript + " ";
                 }
                 document.getElementById('recognized-text').textContent = transcript.trim() || "...";
             };
